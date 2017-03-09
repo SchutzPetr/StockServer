@@ -1,0 +1,11 @@
+<component name="libraryTable">
+  <library name="CustomLibs">
+    <CLASSES>
+      <root url="jar://P:/Java Lib/controlsfx-8.40.12.jar!/" />
+      <root url="jar://P:/Java Lib/jfoenix.jar!/" />
+      <root url="jar://P:/Java Lib/mysql-connector-java-5.1.40-bin.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>
