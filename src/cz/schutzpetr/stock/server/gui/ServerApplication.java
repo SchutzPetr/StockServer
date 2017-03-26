@@ -1,12 +1,10 @@
 package cz.schutzpetr.stock.server.gui;
 
+import cz.schutzpetr.stock.server.client.Clients;
+import cz.schutzpetr.stock.server.commands.CommandManager;
+import cz.schutzpetr.stock.server.events.EventManager;
 import javafx.application.Application;
 import javafx.stage.Stage;
-import org.springframework.context.ApplicationContext;
-import org.springframework.context.support.ClassPathXmlApplicationContext;
-
-import javax.sql.DataSource;
-import java.io.File;
 
 /**
  * Created by Petr Schutz on 06.03.2017
@@ -29,10 +27,9 @@ public class ServerApplication extends Application {
      *
      * @param args args
      */
-    public static void main(String[] args){
-
-
-
+    public static void main(String[] args) {
+        EventManager.registerListener(Clients.getInstance());
+        CommandManager.registerCommands();
         launch(args);
     }
 

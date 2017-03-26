@@ -2,10 +2,10 @@
   <artifact type="exploded-war" name="NewStock:war exploded">
     <output-path>$PROJECT_DIR$/out/artifacts/NewStock_war_exploded</output-path>
     <root id="root">
-      <element id="javaee-facet-resources" facet="NewStock/web/Web" />
+      <element id="javaee-facet-resources" facet="StockManager_Server/web/Web" />
       <element id="directory" name="WEB-INF">
         <element id="directory" name="classes">
-          <element id="module-output" name="NewStock" />
+          <element id="module-output" name="StockManager_Server" />
         </element>
       </element>
     </root>

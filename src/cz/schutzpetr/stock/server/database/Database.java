@@ -35,19 +35,17 @@ public class Database {
     private LocationTable locationTable;
 
     /**
-     *
      * @param dataSource instance of {@code DataSource}
      */
     public void setDataSource(DataSource dataSource) {
         this.dataSource = dataSource;
         this.jdbcTemplateObject = new JdbcTemplate(dataSource);
 
-        this.userTable = new UserTable(jdbcTemplateObject);
+        this.userTable = new UserTable(jdbcTemplateObject, dataSource);
         this.locationTable = new LocationTable(jdbcTemplateObject);
     }
 
     /**
-     *
      * @return true is connected
      */
     public boolean isConnected() {
@@ -56,12 +54,12 @@ public class Database {
         try {
             final PreparedStatement statement = dataSource.getConnection().prepareStatement(CHECK_SQL_QUERY);
             isConnected = true;
-        } catch (SQLException | NullPointerException ignored) {}
+        } catch (SQLException | NullPointerException ignored) {
+        }
         return isConnected;
     }
 
     /**
-     *
      * @return instance of {@code UserTable}
      */
     public UserTable getUserTable() {
@@ -69,7 +67,6 @@ public class Database {
     }
 
     /**
-     *
      * @return instance of {@code LocationTable}
      */
     public LocationTable getLocationTable() {

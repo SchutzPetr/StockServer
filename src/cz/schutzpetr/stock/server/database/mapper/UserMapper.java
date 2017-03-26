@@ -1,7 +1,6 @@
 package cz.schutzpetr.stock.server.database.mapper;
 
 
-
 import cz.schutzpetr.stock.core.user.User;
 import org.springframework.jdbc.core.RowMapper;
 

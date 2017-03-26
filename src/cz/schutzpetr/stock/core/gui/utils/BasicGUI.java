@@ -1,5 +1,7 @@
-package cz.schutzpetr.stock.server.gui;
+package cz.schutzpetr.stock.core.gui.utils;
 
+import cz.schutzpetr.stock.server.events.EventManager;
+import cz.schutzpetr.stock.server.events.events.StageCloseRequest;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
@@ -19,7 +21,7 @@ public class BasicGUI<T> {
     /**
      * Instance of {@code Stage}
      */
-    private final Stage stage;
+    private final Stage stage = new Stage();
     /**
      * Instance of {@code Stage}
      */
@@ -38,10 +40,7 @@ public class BasicGUI<T> {
      * @param modality     is modality
      */
     @SuppressWarnings("unchecked")
-    BasicGUI(String title, int width, int height, boolean resizable, String fxmlLocation, String imgLocation, Modality modality) {
-
-        this.stage = new Stage();
-
+    public BasicGUI(String title, int width, int height, boolean resizable, String fxmlLocation, String imgLocation, Modality modality) {
         Parent root;
         Object controller = null;
         try {
@@ -58,6 +57,10 @@ public class BasicGUI<T> {
 
             stage.show();
 
+            stage.setOnCloseRequest((event -> {
+                EventManager.callEvent(new StageCloseRequest(event));
+            }));
+
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -66,9 +69,16 @@ public class BasicGUI<T> {
     }
 
     /**
+     * @return instance of {@code Stage}
+     */
+    public Stage getStage() {
+        return stage;
+    }
+
+    /**
      * This method closes this scene
      */
-    void closeStage() {
+    public void closeStage() {
         this.stage.close();
     }
 

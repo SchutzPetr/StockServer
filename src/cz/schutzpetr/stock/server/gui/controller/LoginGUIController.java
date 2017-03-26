@@ -3,10 +3,10 @@ package cz.schutzpetr.stock.server.gui.controller;
 import com.jfoenix.controls.JFXPasswordField;
 import com.jfoenix.controls.JFXTextField;
 import cz.schutzpetr.stock.core.auth.AuthResult;
+import cz.schutzpetr.stock.core.gui.utils.ButtonUtils;
 import cz.schutzpetr.stock.server.database.Database;
 import cz.schutzpetr.stock.server.database.DatabaseManager;
 import cz.schutzpetr.stock.server.gui.ApplicationManager;
-import cz.schutzpetr.stock.server.gui.utils.ButtonUtils;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
@@ -52,7 +52,8 @@ public class LoginGUIController {
     /**
      * Called to initialize a controller after its root element has been completely processed.
      */
-    @FXML // This method is called by the FXMLLoader when initialization is complete
+    @FXML
+    // This method is called by the FXMLLoader when initialization is complete
     void initialize() {
         assert wrongImg != null : "fx:id=\"wrongImg\" was not injected: check your FXML file 'LoginGUI.fxml'.";
         assert wrongLabel != null : "fx:id=\"wrongLabel\" was not injected: check your FXML file 'LoginGUI.fxml'.";
@@ -70,20 +71,20 @@ public class LoginGUIController {
     /**
      * This method will be called when login button will be pressed
      */
-    private void login(){
+    private void login() {
         wrongLabel.setVisible(false);
         wrongImg.setVisible(false);
         PasswordAuthentication passwordAuthentication = new PasswordAuthentication(userField.getText(), passField.getText().toCharArray());
         Database database = DatabaseManager.getInstance().getDatabase();
-        if(database == null){
+        if (database == null) {
             wrongLabel.setText("Spojení s databází nebylo navázáno!");
             wrongLabel.setVisible(true);
             wrongImg.setVisible(true);
-        }else{
+        } else {
             AuthResult authResult = database.getUserTable().check(passwordAuthentication);
-            if(authResult.isResult()){
+            if (authResult.isResult()) {
                 ApplicationManager.getInstance().runServerGUI();
-            }else{
+            } else {
                 wrongLabel.setText(authResult.getMessage());
                 wrongLabel.setVisible(true);
                 wrongImg.setVisible(true);

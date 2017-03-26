@@ -1,6 +1,6 @@
 package cz.schutzpetr.stock.server.database;
 
-import cz.schutzpetr.stock.server.Logger;
+import cz.schutzpetr.stock.server.utils.Logger;
 import org.springframework.beans.BeansException;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
@@ -22,7 +22,12 @@ public class DatabaseManager {
     private Database database;
 
     /**
-     *
+     * Private constructor - singleton
+     */
+    private DatabaseManager() {
+    }
+
+    /**
      * @return instance of {@code DatabaseManager}
      */
     public static DatabaseManager getInstance() {
@@ -30,44 +35,38 @@ public class DatabaseManager {
     }
 
     /**
-     * Private constructor - singleton
-     */
-    private DatabaseManager() {
-    }
-
-    /**
      * This method creating connection to Database
      *
      * @return instance of {@code Database}
      */
-    private Database connect(){
+    private Database connect() {
         Logger.log("Connecting to database...");
         Database database = null;
         try {
             //ApplicationContext context = new ClassPathXmlApplicationContext("classpath*:conf/database.xml");
             ApplicationContext context = new ClassPathXmlApplicationContext("configuration/database.xml");
             database = (Database) context.getBean("databaseTemplate");
-        }catch (BeansException e){
+        } catch (BeansException e) {
             Logger.log("Connect failed!");
             e.printStackTrace();
-        }finally {
-            if(database == null || !database.isConnected()){
+        } finally {
+            if (database == null || !database.isConnected()) {
                 Logger.log("Connect failed!");
-            }else{
+            } else {
                 Logger.log("Database connected!");
             }
         }
+        this.database = database;
         return database;
     }
 
     /**
-     *
      * @return instance of {@code Database}
      */
-    public Database getDatabase(){
-        if(database == null || !database.isConnected()){
-           return connect();
+    public Database getDatabase() {
+        if (database != null && database.isConnected()) {
+            return database;
         }
-        return database;
+        return connect();
     }
 }

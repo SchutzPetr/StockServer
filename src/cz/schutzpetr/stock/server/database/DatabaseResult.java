@@ -8,9 +8,20 @@ package cz.schutzpetr.stock.server.database;
  */
 public class DatabaseResult<T> {
 
-    private T type;
+    private final T result;
+    private final boolean isResult;
 
-    public DatabaseResult(T type){
-        this.type = type;
+    public DatabaseResult(boolean isResult, T result) {
+        this.isResult = isResult;
+        this.result = result;
+    }
+
+
+    public T getResult() {
+        return result;
+    }
+
+    public boolean isResult() {
+        return isResult;
     }
 }

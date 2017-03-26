@@ -10,27 +10,29 @@ import java.util.List;
  * @version 1.0
  */
 public class ThreadManager {
+    private static final List<StoppableThread> threads = new ArrayList<>();
     private static ThreadManager ourInstance = new ThreadManager();
+
+    private ThreadManager() {
+    }
 
     public static ThreadManager getInstance() {
         return ourInstance;
     }
 
-    private ThreadManager() {
+    protected static void addThread(StoppableThread stoppableThread) {
+        threads.add(stoppableThread);
     }
 
-    private static final List<StoppableThread> tasks = new ArrayList<>();
-
-
-    protected static void addTask(StoppableThread stoppableThread){
-        tasks.add(stoppableThread);
-    }
-
-    protected static boolean removeTask(StoppableThread stoppableThread){
-        return tasks.remove(stoppableThread);
+    protected static boolean removeThread(StoppableThread stoppableThread) {
+        return threads.remove(stoppableThread);
     }
 
     public static List<StoppableThread> getTasks() {
-        return tasks;
+        return threads;
+    }
+
+    public void stopThreads() {
+        threads.forEach(StoppableThread::terminate);
     }
 }

@@ -1,6 +1,5 @@
 package cz.schutzpetr.stock.core.utils;
 
-import cz.schutzpetr.stock.core.utils.iface.PrinterImpl;
 import javafx.application.Platform;
 import javafx.scene.control.TextArea;
 
@@ -13,7 +12,7 @@ import java.io.OutputStream;
  * @author Petr Schutz
  * @version 1.0
  */
-public class Console extends OutputStream implements PrinterImpl {
+public class Console extends OutputStream {
     private static final String NEW_LINE = System.getProperty("line.separator");
     private TextArea console;
 
@@ -25,17 +24,8 @@ public class Console extends OutputStream implements PrinterImpl {
         Platform.runLater(() -> console.appendText(valueOf));
     }
 
+    @Override
     public void write(int b) throws IOException {
-        appendText(String.valueOf((char)b));
-    }
-
-    @Override
-    public void print(String message) {
-        appendText(message);
-    }
-
-    @Override
-    public void println(String message) {
-        appendText(String.format("%s%s", message, NEW_LINE));
+        Platform.runLater(() -> console.appendText(String.valueOf((char) b)));
     }
 }

@@ -4,12 +4,15 @@ package cz.schutzpetr.stock.server.database.table;
 import cz.schutzpetr.stock.core.auth.AuthData;
 import cz.schutzpetr.stock.core.auth.AuthResult;
 import cz.schutzpetr.stock.core.user.User;
-import cz.schutzpetr.stock.server.Logger;
 import cz.schutzpetr.stock.server.database.mapper.UserMapper;
+import cz.schutzpetr.stock.server.utils.Logger;
 import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.core.PreparedStatementCreator;
 
+import javax.sql.DataSource;
 import java.net.PasswordAuthentication;
+import java.sql.PreparedStatement;
 import java.util.List;
 
 /**
@@ -21,6 +24,10 @@ import java.util.List;
 public class UserTable {
 
     /**
+     * Instance of {@code DataSource}
+     */
+    private final DataSource dataSource;
+    /**
      * Instance of {@code JdbcTemplate}
      */
     private JdbcTemplate jdbcTemplate;
@@ -28,9 +35,10 @@ public class UserTable {
     /**
      * @param jdbcTemplate instance of {@code JdbcTemplate}
      */
-    public UserTable(JdbcTemplate jdbcTemplate) {
+    public UserTable(JdbcTemplate jdbcTemplate, DataSource dataSource) {
 
         this.jdbcTemplate = jdbcTemplate;
+        this.dataSource = dataSource;
     }
 
     /**
@@ -50,10 +58,17 @@ public class UserTable {
      * @return instance of {@code AuthResult}
      */
     public AuthResult check(PasswordAuthentication passwordAuthentication) {
-        String SQL = String.format("SELECT * FROM `users` WHERE `users`.user_Name = \"%s\" AND `users`.user_Password = \"%s\"",
-                passwordAuthentication.getUserName(), new String(passwordAuthentication.getPassword()));
+        /*String SQL = String.format("SELECT * FROM `users` WHERE `users`.user_Name = \"%s\" AND `users`.user_Password = \"%s\"",
+                passwordAuthentication.getUserName(), new String(passwordAuthentication.getPassword()));*/
         try {
-            List<User> users = jdbcTemplate.query(SQL, new UserMapper());
+            PreparedStatementCreator psc = connection -> {
+                PreparedStatement preparedStatement1 = connection.prepareStatement("SELECT * FROM `users` WHERE `users`.user_Name = ? AND `users`.user_Password = ?");
+                preparedStatement1.setString(1, passwordAuthentication.getUserName());
+                preparedStatement1.setString(2, new String(passwordAuthentication.getPassword()));
+                return preparedStatement1;
+            };
+
+            List<User> users = jdbcTemplate.query(psc, new UserMapper());
             if (users.size() == 0) {
                 return new AuthResult(null, false, "Neexistující uživatel nebo chybné heslo!");
             } else {

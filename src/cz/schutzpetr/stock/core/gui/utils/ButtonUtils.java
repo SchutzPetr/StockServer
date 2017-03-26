@@ -1,4 +1,4 @@
-package cz.schutzpetr.stock.server.gui.utils;
+package cz.schutzpetr.stock.core.gui.utils;
 
 import javafx.application.Platform;
 import javafx.scene.control.Button;
