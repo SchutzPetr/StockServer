@@ -1,4 +1,4 @@
-package cz.schutzpetr.stock.server.commands.annotation;
+package cz.schutzpetr.stock.server.command.annotation;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;

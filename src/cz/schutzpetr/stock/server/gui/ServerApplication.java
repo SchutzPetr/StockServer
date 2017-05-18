@@ -1,7 +1,7 @@
 package cz.schutzpetr.stock.server.gui;
 
 import cz.schutzpetr.stock.server.client.Clients;
-import cz.schutzpetr.stock.server.commands.CommandManager;
+import cz.schutzpetr.stock.server.command.CommandManager;
 import cz.schutzpetr.stock.server.events.EventManager;
 import javafx.application.Application;
 import javafx.stage.Stage;

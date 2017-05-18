@@ -1,7 +1,8 @@
 package cz.schutzpetr.stock.server.client;
 
+import cz.schutzpetr.stock.core.connection.ConnectionCommand;
 import cz.schutzpetr.stock.core.utils.StoppableThread;
-import cz.schutzpetr.stock.server.commands.ServerCommandExecutor;
+import cz.schutzpetr.stock.server.command.ServerCommandExecutor;
 import cz.schutzpetr.stock.server.utils.Logger;
 
 import java.io.IOException;
@@ -44,8 +45,8 @@ public class ClientThread extends StoppableThread {
     public void run() {
         while (isRunning() && client.getClientSocket().isConnected() && !client.getClientSocket().isClosed()) {
             try {
-                String command = (String) client.getObjectInputStream().readObject();
-                System.out.println(command);
+                ConnectionCommand command = (ConnectionCommand) client.getObjectInputStream().readObject();
+                System.out.println(command.getCommand());
                 ServerCommandExecutor.getInstance().onCommand(this.client, command);
             } catch (IOException e) {
                 Logger.getLogger().log(Level.SEVERE, "Exeption in ClientThread", e);

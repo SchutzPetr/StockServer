@@ -33,5 +33,6 @@
     <orderEntry type="library" name="Spring Integration-4.0.3" level="project" />
     <orderEntry type="library" name="Spring MVC-4.3.7.RELEASE" level="project" />
     <orderEntry type="library" name="CustomLibs" level="project" />
+    <orderEntry type="module" module-name="StockManager_Core" />
   </component>
 </module>

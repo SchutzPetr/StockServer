@@ -1,4 +1,4 @@
-package cz.schutzpetr.stock.server.commands.utils;
+package cz.schutzpetr.stock.server.command.utils;
 
 /**
  * Created by Petr Schutz on 24.03.2017

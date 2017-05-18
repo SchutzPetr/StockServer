@@ -1,6 +1,6 @@
-package cz.schutzpetr.stock.server.commands.utils;
+package cz.schutzpetr.stock.server.command.utils;
 
-import cz.schutzpetr.stock.server.commands.annotation.Command;
+import cz.schutzpetr.stock.server.command.annotation.Command;
 
 import java.lang.reflect.Method;
 
@@ -13,7 +13,7 @@ import java.lang.reflect.Method;
 public class CommandContainer {
 
     /**
-     * Base command
+     * Base commands
      */
     private final Command command;
 
@@ -25,8 +25,8 @@ public class CommandContainer {
     /**
      * Create a new instance of container that contains Command and his method.
      *
-     * @param command base command
-     * @param method  command method
+     * @param command base commands
+     * @param method  commands method
      */
     public CommandContainer(Command command, Method method) {
         this.command = command;
@@ -41,7 +41,7 @@ public class CommandContainer {
     }
 
     /**
-     * @return a {@code Method} for command
+     * @return a {@code Method} for commands
      */
     public Method getMethod() {
         return method;

@@ -1,5 +1,6 @@
 package cz.schutzpetr.stock.server.database.mapper;
 
+import cz.schutzpetr.stock.core.items.Item;
 import cz.schutzpetr.stock.core.location.*;
 import org.springframework.jdbc.core.RowMapper;
 
@@ -25,15 +26,17 @@ public class LocationMapper implements RowMapper<Location> {
     @Override
     public Location mapRow(ResultSet resultSet, int i) throws SQLException {
         Location location = null;
+        Item item = new Item(resultSet.getInt("locations_item"),
+                resultSet.getInt("locations_item_count"));
         switch (LocationType.valueOf(resultSet.getString("locations_type"))) {
             case AISLE:
-                location = new Aisle(resultSet.getString("locations_name"), resultSet.getString("locations_subStock"));
+                location = new Aisle(resultSet.getString("locations_name"), resultSet.getString("locations_subStock"), item);
                 break;
             case PILE:
-                location = new Pile(resultSet.getString("locations_name"), resultSet.getString("locations_subStock"));
+                location = new Pile(resultSet.getString("locations_name"), resultSet.getString("locations_subStock"), item);
                 break;
             case RACK:
-                location = new Rack(resultSet.getString("locations_name"), resultSet.getString("locations_subStock"));
+                location = new Rack(resultSet.getString("locations_name"), resultSet.getString("locations_subStock"), item);
                 break;
         }
         return location;

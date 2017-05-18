@@ -1,4 +1,4 @@
-package cz.schutzpetr.stock.server.commands.interfaces;
+package cz.schutzpetr.stock.server.command.interfaces;
 
 import cz.schutzpetr.stock.core.permission.Permission;
 

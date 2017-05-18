@@ -1,6 +1,8 @@
 package cz.schutzpetr.stock.server.database;
 
 import cz.schutzpetr.stock.server.database.table.LocationTable;
+import cz.schutzpetr.stock.server.database.table.PalletTable;
+import cz.schutzpetr.stock.server.database.table.StorageCardTable;
 import cz.schutzpetr.stock.server.database.table.UserTable;
 import org.springframework.jdbc.core.JdbcTemplate;
 
@@ -34,6 +36,10 @@ public class Database {
      */
     private LocationTable locationTable;
 
+    private PalletTable palletTable;
+
+    private StorageCardTable storageCardTable;
+
     /**
      * @param dataSource instance of {@code DataSource}
      */
@@ -43,6 +49,11 @@ public class Database {
 
         this.userTable = new UserTable(jdbcTemplateObject, dataSource);
         this.locationTable = new LocationTable(jdbcTemplateObject);
+        this.palletTable = new PalletTable(jdbcTemplateObject);
+        this.storageCardTable = new StorageCardTable(jdbcTemplateObject);
+
+        //generate();
+
     }
 
     /**
@@ -71,5 +82,13 @@ public class Database {
      */
     public LocationTable getLocationTable() {
         return locationTable;
+    }
+
+    public PalletTable getPalletTable() {
+        return palletTable;
+    }
+
+    public StorageCardTable getStorageCardTable() {
+        return storageCardTable;
     }
 }

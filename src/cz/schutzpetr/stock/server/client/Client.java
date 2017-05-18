@@ -4,7 +4,7 @@ import cz.schutzpetr.stock.core.auth.AuthResult;
 import cz.schutzpetr.stock.core.connection.RequestResult;
 import cz.schutzpetr.stock.core.permission.Permission;
 import cz.schutzpetr.stock.core.user.User;
-import cz.schutzpetr.stock.server.commands.interfaces.CommandSender;
+import cz.schutzpetr.stock.server.command.interfaces.CommandSender;
 import cz.schutzpetr.stock.server.events.EventManager;
 import cz.schutzpetr.stock.server.events.events.client.ClientDisconnectEvent;
 import cz.schutzpetr.stock.server.events.events.client.ClientLoginEvent;

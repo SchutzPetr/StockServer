@@ -1,11 +1,11 @@
-package cz.schutzpetr.stock.server.commands;
+package cz.schutzpetr.stock.server.command;
 
-import cz.schutzpetr.stock.server.commands.interfaces.CommandExecutor;
-import cz.schutzpetr.stock.server.commands.interfaces.CommandSender;
-import cz.schutzpetr.stock.server.commands.utils.CommandContainer;
+import cz.schutzpetr.stock.server.command.interfaces.CommandExecutor;
+import cz.schutzpetr.stock.server.command.interfaces.CommandSender;
+import cz.schutzpetr.stock.server.command.utils.CommandContainer;
 
 /**
- * This class contains method that executes the given command.
+ * This class contains method that executes the given commands.
  * <p>
  * <p>
  * Created by Petr Schutz on 25.03.2017
@@ -33,24 +33,24 @@ public class ServerCommandExecutor implements CommandExecutor {
     }
 
     /**
-     * Executes the given command, returning its success
+     * Executes the given commands, returning its success
      *
-     * @param sender  ource of the command
+     * @param sender  ource of the commands
      * @param command Command which was executed
-     * @param args    Passed command arguments
-     * @return true if a valid command, otherwise false
+     * @param args    Passed commands arguments
+     * @param objects Objects
+     * @return true if a valid commands, otherwise false
      */
     @Override
-    public boolean onCommand(CommandSender sender, String command, String[] args) {
+    public boolean onCommand(CommandSender sender, String command, String[] args, Object... objects) {
         if (args.length == 0) {
-
             return true;
         }
 
         CommandContainer commandContainer = CommandManager.getCommandContainer(command, args);
 
         if (commandContainer == null) {
-            sender.sendMessage("The specified command was not found!");
+            sender.sendMessage("The specified commands was not found!");
             return true;
         }
 
@@ -59,8 +59,7 @@ public class ServerCommandExecutor implements CommandExecutor {
             return true;
         }
 
-
-        CommandManager.dispatchCommand(commandContainer, sender, args);
+        CommandManager.dispatchCommand(commandContainer, sender, args, objects);
         return true;
     }
 }

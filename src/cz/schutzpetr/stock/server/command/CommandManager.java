@@ -1,9 +1,12 @@
-package cz.schutzpetr.stock.server.commands;
+package cz.schutzpetr.stock.server.command;
 
-import cz.schutzpetr.stock.server.commands.annotation.BaseCommand;
-import cz.schutzpetr.stock.server.commands.annotation.Command;
-import cz.schutzpetr.stock.server.commands.interfaces.CommandClass;
-import cz.schutzpetr.stock.server.commands.utils.CommandContainer;
+import cz.schutzpetr.stock.server.command.annotation.BaseCommand;
+import cz.schutzpetr.stock.server.command.annotation.Command;
+import cz.schutzpetr.stock.server.command.commands.LocationCommands;
+import cz.schutzpetr.stock.server.command.commands.PalletCommands;
+import cz.schutzpetr.stock.server.command.commands.StorageCardCommand;
+import cz.schutzpetr.stock.server.command.interfaces.CommandClass;
+import cz.schutzpetr.stock.server.command.utils.CommandContainer;
 
 import java.lang.reflect.Method;
 import java.util.LinkedHashMap;
@@ -33,6 +36,8 @@ public class CommandManager {
 
     public static void registerCommands() {
         registerCommands(LocationCommands.class);
+        registerCommands(PalletCommands.class);
+        registerCommands(StorageCardCommand.class);
     }
 
 
@@ -69,10 +74,10 @@ public class CommandManager {
     }
 
     /**
-     * Calls the given command
+     * Calls the given commands
      *
      * @param commandContainer container, that contains instances of {@code Command} and {@code Method}
-     * @param args             command args
+     * @param args             commands args
      */
     public static void dispatchCommand(CommandContainer commandContainer, Object... args) {
 

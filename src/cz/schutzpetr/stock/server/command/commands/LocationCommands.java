@@ -1,13 +1,13 @@
-package cz.schutzpetr.stock.server.commands;
+package cz.schutzpetr.stock.server.command.commands;
 
 import cz.schutzpetr.stock.core.connection.RequestResult;
 import cz.schutzpetr.stock.core.location.Location;
 import cz.schutzpetr.stock.server.client.Client;
-import cz.schutzpetr.stock.server.commands.annotation.BaseCommand;
-import cz.schutzpetr.stock.server.commands.annotation.Command;
-import cz.schutzpetr.stock.server.commands.interfaces.CommandClass;
-import cz.schutzpetr.stock.server.commands.interfaces.CommandSender;
-import cz.schutzpetr.stock.server.commands.utils.CommandType;
+import cz.schutzpetr.stock.server.command.annotation.BaseCommand;
+import cz.schutzpetr.stock.server.command.annotation.Command;
+import cz.schutzpetr.stock.server.command.interfaces.CommandClass;
+import cz.schutzpetr.stock.server.command.interfaces.CommandSender;
+import cz.schutzpetr.stock.server.command.utils.CommandType;
 import cz.schutzpetr.stock.server.database.DatabaseManager;
 import cz.schutzpetr.stock.server.database.DatabaseResult;
 
@@ -25,7 +25,7 @@ public class LocationCommands implements CommandClass {
     //private LocationCommands(){}
 
     @Command(command = "location", aliases = "getAll", type = CommandType.CLIENT, description = "", min = 1, max = 1)
-    public static void onGetAll(CommandSender sender, String[] args) {
+    public static void onGetAll(CommandSender sender, String[] args, Object[] objects) {
         if (sender instanceof Client) {
             Client client = (Client) sender;
 
