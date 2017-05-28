@@ -3,6 +3,7 @@ package cz.schutzpetr.stock.server.gui.controller;
 import com.jfoenix.controls.JFXPasswordField;
 import com.jfoenix.controls.JFXTextField;
 import cz.schutzpetr.stock.core.auth.AuthResult;
+import cz.schutzpetr.stock.core.gui.ControllerImpl;
 import cz.schutzpetr.stock.core.gui.utils.ButtonUtils;
 import cz.schutzpetr.stock.server.database.Database;
 import cz.schutzpetr.stock.server.database.DatabaseManager;
@@ -23,7 +24,7 @@ import java.util.ResourceBundle;
  * @version 1.0
  */
 
-public class LoginGUIController {
+public class LoginGUIController implements ControllerImpl {
 
     @FXML // ResourceBundle that was given to the FXMLLoader
     private ResourceBundle resources;

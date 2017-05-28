@@ -7,5 +7,5 @@ package cz.schutzpetr.stock.server.command.utils;
  * @version 1.0
  */
 public enum CommandType {
-    COONSOLE, CLIENT, ANY
+    CONSOLE, CLIENT, ANY
 }

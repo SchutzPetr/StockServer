@@ -10,7 +10,6 @@ import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.PreparedStatementCreator;
 
-import javax.sql.DataSource;
 import java.net.PasswordAuthentication;
 import java.sql.PreparedStatement;
 import java.util.List;
@@ -21,24 +20,13 @@ import java.util.List;
  * @author Petr Schutz
  * @version 1.0
  */
-public class UserTable {
+public class UserTable extends DBTable {
 
     /**
-     * Instance of {@code DataSource}
+     * @param jdbcTemplate jdbcTemplate
      */
-    private final DataSource dataSource;
-    /**
-     * Instance of {@code JdbcTemplate}
-     */
-    private JdbcTemplate jdbcTemplate;
-
-    /**
-     * @param jdbcTemplate instance of {@code JdbcTemplate}
-     */
-    public UserTable(JdbcTemplate jdbcTemplate, DataSource dataSource) {
-
-        this.jdbcTemplate = jdbcTemplate;
-        this.dataSource = dataSource;
+    public UserTable(JdbcTemplate jdbcTemplate) {
+        super(jdbcTemplate);
     }
 
     /**
@@ -58,14 +46,12 @@ public class UserTable {
      * @return instance of {@code AuthResult}
      */
     public AuthResult check(PasswordAuthentication passwordAuthentication) {
-        /*String SQL = String.format("SELECT * FROM `users` WHERE `users`.user_Name = \"%s\" AND `users`.user_Password = \"%s\"",
-                passwordAuthentication.getUserName(), new String(passwordAuthentication.getPassword()));*/
         try {
             PreparedStatementCreator psc = connection -> {
-                PreparedStatement preparedStatement1 = connection.prepareStatement("SELECT * FROM `users` WHERE `users`.user_Name = ? AND `users`.user_Password = ?");
-                preparedStatement1.setString(1, passwordAuthentication.getUserName());
-                preparedStatement1.setString(2, new String(passwordAuthentication.getPassword()));
-                return preparedStatement1;
+                PreparedStatement preparedStatement = connection.prepareStatement("SELECT * FROM `users` WHERE `users`.user_Name = ? AND `users`.user_Password = ?");
+                preparedStatement.setString(1, passwordAuthentication.getUserName());
+                preparedStatement.setString(2, new String(passwordAuthentication.getPassword()));
+                return preparedStatement;
             };
 
             List<User> users = jdbcTemplate.query(psc, new UserMapper());

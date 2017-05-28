@@ -1,6 +1,6 @@
 package cz.schutzpetr.stock.server.database.mapper;
 
-import cz.schutzpetr.stock.core.Pallet;
+import cz.schutzpetr.stock.core.location.Pallet;
 import cz.schutzpetr.stock.server.database.DatabaseManager;
 import org.springframework.jdbc.core.RowMapper;
 
@@ -25,7 +25,7 @@ public class PalletMapper implements RowMapper<Pallet> {
      */
     @Override
     public Pallet mapRow(ResultSet resultSet, int i) throws SQLException {
-        return new Pallet(resultSet.getString("palletNumber"),
+        return new Pallet(resultSet.getString("pallet_number"),
                 DatabaseManager.getInstance().getDatabase().getLocationTable().getLocation(
                         resultSet.getString("pallet_location_name")).getResult());
 

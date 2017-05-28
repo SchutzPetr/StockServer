@@ -2,6 +2,7 @@ package cz.schutzpetr.stock.server.command;
 
 import cz.schutzpetr.stock.server.command.annotation.BaseCommand;
 import cz.schutzpetr.stock.server.command.annotation.Command;
+import cz.schutzpetr.stock.server.command.commands.ItemCommands;
 import cz.schutzpetr.stock.server.command.commands.LocationCommands;
 import cz.schutzpetr.stock.server.command.commands.PalletCommands;
 import cz.schutzpetr.stock.server.command.commands.StorageCardCommand;
@@ -38,6 +39,7 @@ public class CommandManager {
         registerCommands(LocationCommands.class);
         registerCommands(PalletCommands.class);
         registerCommands(StorageCardCommand.class);
+        registerCommands(ItemCommands.class);
     }
 
 
@@ -82,7 +84,6 @@ public class CommandManager {
     public static void dispatchCommand(CommandContainer commandContainer, Object... args) {
 
         try {
-            System.out.println(args.length);
             commandContainer.getMethod().invoke(null, args);
         } catch (Exception e) {
             e.printStackTrace();

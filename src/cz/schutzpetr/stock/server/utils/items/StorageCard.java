@@ -1,7 +1,8 @@
 package cz.schutzpetr.stock.server.utils.items;
 
-import cz.schutzpetr.stock.core.connection.ConnectionStorageCard;
-import cz.schutzpetr.stock.core.utils.EAN;
+import cz.schutzpetr.stock.core.storagecard.ConnectionStorageCard;
+import cz.schutzpetr.stock.core.storagecard.SimpleStorageCard;
+import cz.schutzpetr.stock.core.utils.EuropeanArticleNumber;
 import javafx.embed.swing.SwingFXUtils;
 import javafx.scene.image.Image;
 
@@ -18,31 +19,26 @@ import java.io.InputStream;
  * @author Petr Schutz
  * @version 1.0
  */
-public class StorageCard {
-    private final int cardNumber;
-    private final String itemName;
-    private final EAN ean;
-    private final String itemNumber;
-    private final double pricePerUnit;
-    private final String producer;
-    private final double weight;
-    private final int numberOfUnitInPackage;
+public class StorageCard extends SimpleStorageCard {
     private final InputStream imgInputStream;
 
-    public StorageCard(int cardNumber, String itemName, EAN ean, String itemNumber, double pricePerUnit, String producer, double weight, int numberOfUnitInPackage, InputStream imgInputStream) {
-        this.cardNumber = cardNumber;
-        this.itemName = itemName;
-        this.ean = ean;
-        this.itemNumber = itemNumber;
-        this.pricePerUnit = pricePerUnit;
-        this.producer = producer;
-        this.weight = weight;
-        this.numberOfUnitInPackage = numberOfUnitInPackage;
+    public StorageCard(int cardNumber, String itemName, EuropeanArticleNumber ean, String itemNumber, double pricePerUnit, String producer,
+                       double weight, int numberOfUnitInPackage, InputStream imgInputStream) {
+        super(cardNumber, itemName, ean, itemNumber, pricePerUnit, producer, weight, numberOfUnitInPackage);
         this.imgInputStream = imgInputStream;
     }
 
-    public StorageCard(ConnectionStorageCard object) {
-        this(object.getCardNumber(), object.getItemName(), object.getEan(), object.getItemNumber(), object.getPricePerUnit(), object.getProducer(), object.getWeight(), object.getNumberOfUnitInPackage(), new ByteArrayInputStream(object.getImgByteArray()));
+
+    public StorageCard(ConnectionStorageCard connectionStorageCard) {
+        this(connectionStorageCard.getCardNumber(), connectionStorageCard.getItemName(), connectionStorageCard.getEuropeanArticleNumber(),
+                connectionStorageCard.getItemNumber(), connectionStorageCard.getPricePerUnit(), connectionStorageCard.getProducer(), connectionStorageCard.getWeight(),
+                connectionStorageCard.getNumberOfUnitInPackage(), new ByteArrayInputStream(connectionStorageCard.getImgByteArray()));
+    }
+
+    public StorageCard(SimpleStorageCard simpleStorageCard, InputStream imgInputStream) {
+        this(simpleStorageCard.getCardNumber(), simpleStorageCard.getItemName(), simpleStorageCard.getEuropeanArticleNumber(),
+                simpleStorageCard.getItemNumber(), simpleStorageCard.getPricePerUnit(), simpleStorageCard.getProducer(), simpleStorageCard.getWeight(),
+                simpleStorageCard.getNumberOfUnitInPackage(), imgInputStream);
     }
 
     private static ByteArrayOutputStream getByteArrayOutputStream(InputStream imgInputStream) {
@@ -57,40 +53,9 @@ public class StorageCard {
     }
 
     public ConnectionStorageCard getConnectionStorageCard() {
-        return new ConnectionStorageCard(cardNumber, itemName, ean, itemNumber, pricePerUnit, producer, weight, numberOfUnitInPackage, getByteArrayOutputStream(imgInputStream).toByteArray());
+        return new ConnectionStorageCard(this, getByteArrayOutputStream(imgInputStream).toByteArray());
     }
 
-    public int getCardNumber() {
-        return cardNumber;
-    }
-
-    public String getItemName() {
-        return itemName;
-    }
-
-    public EAN getEan() {
-        return ean;
-    }
-
-    public String getItemNumber() {
-        return itemNumber;
-    }
-
-    public double getPricePerUnit() {
-        return pricePerUnit;
-    }
-
-    public String getProducer() {
-        return producer;
-    }
-
-    public double getWeight() {
-        return weight;
-    }
-
-    public int getNumberOfUnitInPackage() {
-        return numberOfUnitInPackage;
-    }
 
     public InputStream getImageInputStream() {
         return imgInputStream;

@@ -2,6 +2,7 @@ package cz.schutzpetr.stock.server.gui.controller;
 
 
 import com.jfoenix.controls.JFXTextField;
+import cz.schutzpetr.stock.core.gui.ControllerImpl;
 import cz.schutzpetr.stock.core.utils.TextAreaHandler;
 import cz.schutzpetr.stock.server.Server;
 import cz.schutzpetr.stock.server.gui.server.CPULoadChart;
@@ -23,7 +24,7 @@ import java.util.logging.Level;
  * Sample Skeleton for 'ServerGUI.fxml' Controller Class
  */
 
-public class ServerGUIController {
+public class ServerGUIController implements ControllerImpl {
 
     @FXML // ResourceBundle that was given to the FXMLLoader
     private ResourceBundle resources;
@@ -105,6 +106,8 @@ public class ServerGUIController {
         serverStopButton.setOnAction(event -> Server.getInstance().stop());
         serverRestartButton.setOnAction(event -> Server.getInstance().restart());
 
+        //DatabaseManager.getInstance().getDatabase().getLocationTable().insertLocation(Location.getLocation("H-100", LocationType.PILE, "101"));
+        //DatabaseManager.getInstance().getDatabase().getLocationTable().insertLocation(Location.getLocation("H-100", LocationType.PILE, "101"));
     }
 }
 

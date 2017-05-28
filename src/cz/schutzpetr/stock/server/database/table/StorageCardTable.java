@@ -1,7 +1,11 @@
 package cz.schutzpetr.stock.server.database.table;
 
-import cz.schutzpetr.stock.server.database.DatabaseResult;
-import cz.schutzpetr.stock.server.database.mapper.StorageCardMapper;
+import cz.schutzpetr.stock.core.connection.RequestResult;
+import cz.schutzpetr.stock.core.storagecard.ConnectionStorageCard;
+import cz.schutzpetr.stock.core.storagecard.SimpleStorageCard;
+import cz.schutzpetr.stock.server.database.extractor.SimpleStorageCardExtractor;
+import cz.schutzpetr.stock.server.database.extractor.StorageCardExtractor;
+import cz.schutzpetr.stock.server.database.mapper.SimpleStorageCardMapper;
 import cz.schutzpetr.stock.server.utils.items.StorageCard;
 import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -16,64 +20,82 @@ import java.util.ArrayList;
  * @author Petr Schutz
  * @version 1.0
  */
-public class StorageCardTable {
-
-    private JdbcTemplate jdbcTemplate;
+public class StorageCardTable extends DBTable {
 
     /**
      * @param jdbcTemplate jdbcTemplate
      */
     public StorageCardTable(JdbcTemplate jdbcTemplate) {
-        this.jdbcTemplate = jdbcTemplate;
+        super(jdbcTemplate);
     }
 
-    public DatabaseResult<ArrayList<StorageCard>> getStorageCards() {
-        try {
-            PreparedStatementCreator psc = connection -> connection.prepareStatement("select * from storage_cards");
-            ArrayList<StorageCard> locations = new ArrayList<>(jdbcTemplate.query(psc, new StorageCardMapper()));
-            return new DatabaseResult<>(true, locations);
-        } catch (DataAccessException e) {
-            e.printStackTrace();
-        }
-        return new DatabaseResult<>(false, null);
-    }
 
-    public DatabaseResult<StorageCard> getStorageCards(int cardNumber) {
+    public RequestResult<ConnectionStorageCard> getStorageCard(int cardNumber) {
         try {
             PreparedStatementCreator psc = connection -> {
-                PreparedStatement preparedStatement1 = connection.prepareStatement("select * from storage_cards where card_number = ?");
+                PreparedStatement preparedStatement1 = connection.prepareStatement("SELECT * FROM `storage_cards` WHERE `card_number` = ?");
                 preparedStatement1.setInt(1, cardNumber);
                 return preparedStatement1;
             };
-            ArrayList<StorageCard> storageCards = new ArrayList<>(jdbcTemplate.query(psc, new StorageCardMapper()));
-            if (!storageCards.isEmpty()) return new DatabaseResult<>(true, storageCards.get(0));
+            return new RequestResult<>(true, jdbcTemplate.query(psc, new StorageCardExtractor()).getConnectionStorageCard());
+        } catch (DataAccessException e) {
+            e.printStackTrace();
+            return new RequestResult<>(e);
+        }
+    }
+
+    public RequestResult<ArrayList<SimpleStorageCard>> getSimpleStorageCards() {
+        return getSimpleStorageCards("SELECT `card_number`, `item_name`, `ean`, `item_number`, `price_per_unit`, `item_producer`, `item_weight`, `number_of_unit_in_package` FROM `storage_cards`");
+    }
+
+
+    public RequestResult<ArrayList<SimpleStorageCard>> getSimpleStorageCards(String sql) {
+        try {
+            PreparedStatementCreator psc = connection -> connection.prepareStatement(sql);
+            return new RequestResult<>(true, new ArrayList<>(jdbcTemplate.query(psc, new SimpleStorageCardMapper())));
         } catch (DataAccessException e) {
             e.printStackTrace();
         }
-        return new DatabaseResult<>(false, null);
+        return new RequestResult<>(false);
     }
 
-    public DatabaseResult<Boolean> insertStorageCard(StorageCard storageCard) {
+
+    public RequestResult<SimpleStorageCard> getSimpleStorageCard(int cardNumber) {
         try {
             PreparedStatementCreator psc = connection -> {
-                PreparedStatement preparedStatement1 = connection.prepareStatement("INSERT INTO `storage_cards`(`card_number`, `item_name`, `ean`, `item_number`, `price_per_unit`, `item_producer`, `item_weight`, `number_of_unit_in_package`, `item_image`) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)");
-                preparedStatement1.setInt(1, storageCard.getCardNumber());
-                preparedStatement1.setString(2, storageCard.getItemName());
-                preparedStatement1.setString(3, storageCard.getEan().getEAN());
-                preparedStatement1.setString(4, storageCard.getItemNumber());
-                preparedStatement1.setDouble(5, storageCard.getPricePerUnit());
-                preparedStatement1.setString(6, storageCard.getProducer());
-                preparedStatement1.setDouble(7, storageCard.getWeight());
-                preparedStatement1.setInt(8, storageCard.getNumberOfUnitInPackage());
-                preparedStatement1.setBlob(9, storageCard.getImageInputStream());
-
+                PreparedStatement preparedStatement1 = connection.prepareStatement("SELECT `card_number`, `item_name`, `ean`, `item_number`, `price_per_unit`, `item_producer`, `item_weight`, `number_of_unit_in_package`, `item_image` FROM `storage_cards` WHERE `card_number` = ?");
+                preparedStatement1.setInt(1, cardNumber);
                 return preparedStatement1;
             };
-            jdbcTemplate.update(psc);
+            return new RequestResult<>(true, jdbcTemplate.query(psc, new SimpleStorageCardExtractor()));
         } catch (DataAccessException e) {
-            return new DatabaseResult<>(false, null);
+            e.printStackTrace();
+            return new RequestResult<>(e);
         }
-        return new DatabaseResult<>(true, true);
+    }
+
+    public RequestResult<Boolean> insertStorageCard(StorageCard storageCard) {
+        try {
+            PreparedStatementCreator psc = connection -> {
+                PreparedStatement preparedStatement = connection.prepareStatement("INSERT INTO `storage_cards`(`item_name`, `ean`, `item_number`, `price_per_unit`, `item_producer`, `item_weight`, `number_of_unit_in_package`, `item_image`) VALUES (?, ?, ?, ?, ?, ?, ?, ?)");
+                preparedStatement.setString(1, storageCard.getItemName());
+                preparedStatement.setString(2, storageCard.getEuropeanArticleNumber().getNumber());
+                preparedStatement.setString(3, storageCard.getItemNumber());
+                preparedStatement.setDouble(4, storageCard.getPricePerUnit());
+                preparedStatement.setString(5, storageCard.getProducer());
+                preparedStatement.setDouble(6, storageCard.getWeight());
+                preparedStatement.setInt(7, storageCard.getNumberOfUnitInPackage());
+                preparedStatement.setBlob(8, storageCard.getImageInputStream());
+
+                return preparedStatement;
+            };
+
+            jdbcTemplate.update(psc);
+            return new RequestResult<>(true, true);
+        } catch (DataAccessException e) {
+            e.printStackTrace();
+            return new RequestResult<>(e);
+        }
     }
 
 }

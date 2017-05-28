@@ -1,14 +1,14 @@
 package cz.schutzpetr.stock.server.database;
 
-import cz.schutzpetr.stock.server.database.table.LocationTable;
-import cz.schutzpetr.stock.server.database.table.PalletTable;
-import cz.schutzpetr.stock.server.database.table.StorageCardTable;
-import cz.schutzpetr.stock.server.database.table.UserTable;
+import cz.schutzpetr.stock.core.location.Location;
+import cz.schutzpetr.stock.server.database.table.*;
 import org.springframework.jdbc.core.JdbcTemplate;
 
 import javax.sql.DataSource;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by Petr Schutz on 06.03.2017
@@ -22,38 +22,60 @@ public class Database {
      * Instance of {@code DataSource}
      */
     private DataSource dataSource;
-    /**
-     * Instance of {@code JdbcTemplate}
-     */
-    private JdbcTemplate jdbcTemplateObject;
 
     /**
      * Instance of {@code UserTable}
      */
     private UserTable userTable;
+
     /**
      * Instance of {@code LocationTable}
      */
     private LocationTable locationTable;
 
+    /**
+     * Instance of {@code PalletTable}
+     */
     private PalletTable palletTable;
 
+    /**
+     * Instance of {@code StorageCardTable}
+     */
     private StorageCardTable storageCardTable;
+
+    /**
+     * Instance of {@code ItemTable}
+     */
+    private ItemTable itemTable;
 
     /**
      * @param dataSource instance of {@code DataSource}
      */
     public void setDataSource(DataSource dataSource) {
         this.dataSource = dataSource;
-        this.jdbcTemplateObject = new JdbcTemplate(dataSource);
 
-        this.userTable = new UserTable(jdbcTemplateObject, dataSource);
+        JdbcTemplate jdbcTemplateObject = new JdbcTemplate(dataSource);
+
+        this.userTable = new UserTable(jdbcTemplateObject);
         this.locationTable = new LocationTable(jdbcTemplateObject);
         this.palletTable = new PalletTable(jdbcTemplateObject);
         this.storageCardTable = new StorageCardTable(jdbcTemplateObject);
+        this.itemTable = new ItemTable(jdbcTemplateObject);
 
-        //generate();
+        List<Location> locations = new ArrayList<>();
 
+        /*for (int i = 5; i < 10; i++) {
+            for (int j = 0; j < 100; j++) {
+                for (int k = 0; k < 30; k++) {
+                    locations.add(new Rack(((i*100)+j) + "-" + k + "-1",  "101"));
+                    locations.add(new Rack(((i*100)+j) + "-" + k + "-2",  "101"));
+                    locations.add(new Rack(((i*100)+j) + "-" + k + "-3",  "101"));
+                    locations.add(new Rack(((i*100)+j) + "-" + k + "-4",  "101"));
+                }
+            }
+        }*/
+
+        //locationTable.insertLocations(locations);
     }
 
     /**
@@ -90,5 +112,9 @@ public class Database {
 
     public StorageCardTable getStorageCardTable() {
         return storageCardTable;
+    }
+
+    public ItemTable getItemTable() {
+        return itemTable;
     }
 }
