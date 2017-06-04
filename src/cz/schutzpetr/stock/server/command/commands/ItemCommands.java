@@ -56,4 +56,28 @@ public class ItemCommands implements CommandClass {
             }
         }
     }
+
+    @Command(command = "item", aliases = "getbysql", type = CommandType.CLIENT, description = "/item getbysql %sql%", min = 1, max = 1)
+    public static void onGetBySQL(CommandSender sender, String[] args, Object[] objects) {
+        if (sender instanceof Client) {
+            Client client = (Client) sender;
+
+            if (objects[0] instanceof String) {
+                //todo: client.send(DatabaseManager.getInstance().getDatabase().getItemTable().ge((String) objects[0]));
+            }
+        }
+    }
+
+    @Command(command = "item", aliases = "create", type = CommandType.CLIENT, description = "", usage = "/item create %item%", min = 1, max = 1)
+    public static void create(CommandSender sender, String[] args, Object[] objects) {
+        if (sender instanceof Client) {//todo:
+            Client client = (Client) sender;
+
+            if (objects[0] instanceof Item) {
+                Item item = (Item) objects[0];
+
+                client.send(DatabaseManager.getInstance().getDatabase().getItemTable().insertItem(item));
+            }
+        }
+    }
 }

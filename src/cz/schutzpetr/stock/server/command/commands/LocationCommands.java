@@ -40,7 +40,7 @@ public class LocationCommands implements CommandClass {
         }
     }
 
-    @Command(command = "location", aliases = "create", type = CommandType.CLIENT, description = "", usage = "/location location %location%", min = 1, max = 1)
+    @Command(command = "location", aliases = "create", type = CommandType.CLIENT, description = "", usage = "/location create %location%", min = 1, max = 1)
     public static void create(CommandSender sender, String[] args, Object[] objects) {
         if (sender instanceof Client) {//todo:
             Client client = (Client) sender;

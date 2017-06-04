@@ -1,5 +1,6 @@
 package cz.schutzpetr.stock.server.command.commands;
 
+import cz.schutzpetr.stock.core.location.Location;
 import cz.schutzpetr.stock.server.client.Client;
 import cz.schutzpetr.stock.server.command.annotation.BaseCommand;
 import cz.schutzpetr.stock.server.command.annotation.Command;
@@ -33,6 +34,17 @@ public class PalletCommands implements CommandClass {
 
             if (objects[0] instanceof String) {
                 client.send(DatabaseManager.getInstance().getDatabase().getPalletTable().getPallets((String) objects[0]));
+            }
+        }
+    }
+
+    @Command(command = "pallet", aliases = "getbylocation", type = CommandType.CLIENT, description = "/pallet getbylocation %location%", min = 1, max = 1)
+    public static void onGetByLocation(CommandSender sender, String[] args, Object[] objects) {
+        if (sender instanceof Client) {
+            Client client = (Client) sender;
+
+            if (objects[0] instanceof Location) {
+                client.send(DatabaseManager.getInstance().getDatabase().getPalletTable().getPalletsByLocation(((Location) objects[0]).getName()));
             }
         }
     }

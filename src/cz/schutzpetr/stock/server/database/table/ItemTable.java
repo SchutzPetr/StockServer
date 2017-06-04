@@ -81,4 +81,23 @@ public class ItemTable extends DBTable {
             return new RequestResult<>(e);
         }
     }
+
+    public RequestResult<Boolean> insertItem(Item item) {
+        try {
+            PreparedStatementCreator psc = connection -> {
+                PreparedStatement preparedStatement1 = connection.prepareStatement("INSERT INTO `items` (`storage_card`, `base_location`, `base_location_type`, `item_count`, `item_reserved`) VALUES (?, ?, ?, ?, ?)");
+                preparedStatement1.setInt(1, item.getStorageCard().getCardNumber());
+                preparedStatement1.setString(2, item.getBaseLocation().getName());
+                preparedStatement1.setString(3, item.getBaseLocation().getBaseLocationType().toString());
+                preparedStatement1.setInt(4, item.getCount());
+                preparedStatement1.setInt(5, item.getReserved());
+                return preparedStatement1;
+            };
+            jdbcTemplate.update(psc);
+            return new RequestResult<>(true, true);
+        } catch (DataAccessException e) {
+            e.printStackTrace();
+            return new RequestResult<>(e);
+        }
+    }
 }
