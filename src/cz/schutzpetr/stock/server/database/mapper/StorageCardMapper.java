@@ -1,7 +1,7 @@
 package cz.schutzpetr.stock.server.database.mapper;
 
-import cz.schutzpetr.stock.core.storagecard.SimpleStorageCard;
 import cz.schutzpetr.stock.core.utils.EuropeanArticleNumber;
+import cz.schutzpetr.stock.server.utils.items.StorageCard;
 import org.springframework.jdbc.core.RowMapper;
 
 import java.sql.ResultSet;
@@ -13,7 +13,7 @@ import java.sql.SQLException;
  * @author Petr Schutz
  * @version 1.0
  */
-public class SimpleStorageCardMapper implements RowMapper<SimpleStorageCard> {
+public class StorageCardMapper implements RowMapper<StorageCard> {
 
     /**
      * Implementations must implement this method to map each row of data in the ResultSet. This method should not call next() on the ResultSet;
@@ -24,15 +24,15 @@ public class SimpleStorageCardMapper implements RowMapper<SimpleStorageCard> {
      * @throws SQLException - if a SQLException is encountered getting column values (that is, there's no need to catch SQLException)
      */
     @Override
-    public SimpleStorageCard mapRow(ResultSet resultSet, int i) throws SQLException {
-        return new SimpleStorageCard(
-                resultSet.getInt("card_number"),
+    public StorageCard mapRow(ResultSet resultSet, int i) throws SQLException {
+        return new StorageCard(resultSet.getInt("card_number"),
                 resultSet.getString("item_name"),
                 new EuropeanArticleNumber(resultSet.getString("ean")),
                 resultSet.getString("item_number"),
                 resultSet.getDouble("price_per_unit"),
                 resultSet.getString("item_producer"),
                 resultSet.getDouble("item_weight"),
-                resultSet.getInt("number_of_unit_in_package"));
+                resultSet.getInt("number_of_unit_in_package"),
+                resultSet.getBlob("item_image").getBinaryStream());
     }
 }

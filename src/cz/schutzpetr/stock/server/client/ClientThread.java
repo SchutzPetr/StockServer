@@ -22,7 +22,7 @@ public class ClientThread extends StoppableThread {
     private final Client client;
 
     /**
-     * Creates new instance of {@code StoppableThread}
+     * Creates news instance of {@code StoppableThread}
      *
      * @param client instance of {@code Client}
      */

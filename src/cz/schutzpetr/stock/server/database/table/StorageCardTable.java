@@ -1,18 +1,6 @@
 package cz.schutzpetr.stock.server.database.table;
 
-import cz.schutzpetr.stock.core.connection.RequestResult;
-import cz.schutzpetr.stock.core.storagecard.ConnectionStorageCard;
-import cz.schutzpetr.stock.core.storagecard.SimpleStorageCard;
-import cz.schutzpetr.stock.server.database.extractor.SimpleStorageCardExtractor;
-import cz.schutzpetr.stock.server.database.extractor.StorageCardExtractor;
-import cz.schutzpetr.stock.server.database.mapper.SimpleStorageCardMapper;
-import cz.schutzpetr.stock.server.utils.items.StorageCard;
-import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
-import org.springframework.jdbc.core.PreparedStatementCreator;
-
-import java.sql.PreparedStatement;
-import java.util.ArrayList;
 
 /**
  * Created by Petr Schutz on 03.04.2017
@@ -28,7 +16,7 @@ public class StorageCardTable extends DBTable {
     public StorageCardTable(JdbcTemplate jdbcTemplate) {
         super(jdbcTemplate);
     }
-
+/*
 
     public RequestResult<ConnectionStorageCard> getStorageCard(int cardNumber) {
         try {
@@ -52,7 +40,7 @@ public class StorageCardTable extends DBTable {
     public RequestResult<ArrayList<SimpleStorageCard>> getSimpleStorageCards(String sql) {
         try {
             PreparedStatementCreator psc = connection -> connection.prepareStatement(sql);
-            return new RequestResult<>(true, new ArrayList<>(jdbcTemplate.query(psc, new SimpleStorageCardMapper())));
+            return new RequestResult<>(true, new ArrayList<>(jdbcTemplate.query(psc, new SimpleStockCardMapper())));
         } catch (DataAccessException e) {
             e.printStackTrace();
         }
@@ -97,5 +85,5 @@ public class StorageCardTable extends DBTable {
             return new RequestResult<>(e);
         }
     }
-
+*/
 }

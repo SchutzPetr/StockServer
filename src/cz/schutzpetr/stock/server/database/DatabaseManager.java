@@ -43,7 +43,7 @@ public class DatabaseManager {
         Logger.log("Connecting to database...");
         Database database = null;
         try {
-            //ApplicationContext context = new ClassPathXmlApplicationContext("classpath*:conf/database.xml");
+            //ApplicationContext context = news ClassPathXmlApplicationContext("classpath*:conf/database.xml");
             ApplicationContext context = new ClassPathXmlApplicationContext("configuration/database.xml");
             database = (Database) context.getBean("databaseTemplate");
         } catch (BeansException e) {

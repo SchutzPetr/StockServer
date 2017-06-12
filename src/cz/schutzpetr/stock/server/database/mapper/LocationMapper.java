@@ -1,13 +1,13 @@
 package cz.schutzpetr.stock.server.database.mapper;
 
-import cz.schutzpetr.stock.core.location.*;
+import cz.schutzpetr.stock.core.location.Location;
 import org.springframework.jdbc.core.RowMapper;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
 /**
- * Created by Petr Schutz on 17.12.2016
+ * Created by Petr Schutz on 19.05.2017
  *
  * @author Petr Schutz
  * @version 1.0
@@ -24,18 +24,6 @@ public class LocationMapper implements RowMapper<Location> {
      */
     @Override
     public Location mapRow(ResultSet resultSet, int i) throws SQLException {
-        Location location = null;
-        switch (LocationType.valueOf(resultSet.getString("location_type"))) {
-            case AISLE:
-                location = new Aisle(resultSet.getString("location_name"), resultSet.getString("location_subStock"));
-                break;
-            case PILE:
-                location = new Pile(resultSet.getString("location_name"), resultSet.getString("location_subStock"));
-                break;
-            case RACK:
-                location = new Rack(resultSet.getString("location_name"), resultSet.getString("location_subStock"));
-                break;
-        }
-        return location;
+        return Location.getLocation(resultSet);
     }
 }

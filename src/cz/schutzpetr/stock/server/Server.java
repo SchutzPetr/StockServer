@@ -1,5 +1,6 @@
 package cz.schutzpetr.stock.server;
 
+import cz.schutzpetr.stock.server.database.DatabaseManager;
 import cz.schutzpetr.stock.server.events.EventManager;
 import cz.schutzpetr.stock.server.events.events.server.ServerStartedEvent;
 import cz.schutzpetr.stock.server.events.events.server.ServerStartingEvent;
@@ -10,6 +11,7 @@ import cz.schutzpetr.stock.server.utils.Logger;
 import javax.net.ServerSocketFactory;
 import java.io.IOException;
 import java.net.ServerSocket;
+import java.sql.SQLException;
 
 /**
  * Created by Petr Schutz on 13.03.2017
@@ -48,12 +50,18 @@ public class Server {
 
         isRunning = true;
         EventManager.callEvent(new ServerStartedEvent());
+        DatabaseManager.getInstance().getDatabase();
         Logger.log("Server up & ready for connections......");
     }
 
     public void restart() {
         Logger.log("The server will now restart...");
         EventManager.callEvent(new ServerStoppingEvent());
+        try {
+            DatabaseManager.getInstance().getDatabase().disconnect();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
         isRunning = false;
         serverThread.terminate();
 

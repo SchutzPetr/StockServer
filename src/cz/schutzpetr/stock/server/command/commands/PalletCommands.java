@@ -1,6 +1,6 @@
 package cz.schutzpetr.stock.server.command.commands;
 
-import cz.schutzpetr.stock.core.location.Location;
+import cz.schutzpetr.stock.core.location.Pallet;
 import cz.schutzpetr.stock.server.client.Client;
 import cz.schutzpetr.stock.server.command.annotation.BaseCommand;
 import cz.schutzpetr.stock.server.command.annotation.Command;
@@ -18,33 +18,28 @@ import cz.schutzpetr.stock.server.database.DatabaseManager;
 @BaseCommand(command = "pallet")
 public class PalletCommands implements CommandClass {
 
-    @Command(command = "pallet", aliases = "getall", type = CommandType.CLIENT, description = "", min = 1, max = 1)
+    @Command(command = "pallet", aliases = "get", type = CommandType.CLIENT, description = "", min = 1, max = 1)
     public static void onGetAll(CommandSender sender, String[] args, Object[] objects) {
         if (sender instanceof Client) {//todo:
             Client client = (Client) sender;
 
-            client.send(DatabaseManager.getInstance().getDatabase().getPalletTable().getPallets());
-        }
-    }
-
-    @Command(command = "pallet", aliases = "getbysql", type = CommandType.CLIENT, description = "/pallet getbysql %sql%", min = 1, max = 1)
-    public static void onGetBySQL(CommandSender sender, String[] args, Object[] objects) {
-        if (sender instanceof Client) {
-            Client client = (Client) sender;
-
-            if (objects[0] instanceof String) {
-                client.send(DatabaseManager.getInstance().getDatabase().getPalletTable().getPallets((String) objects[0]));
+            if (objects == null || objects.length == 0) {
+                client.send(DatabaseManager.getInstance().getDatabase().getLocationTable().getPallets());
+            } else if (objects[0] instanceof String && objects[1] instanceof String) {
+                client.send(DatabaseManager.getInstance().getDatabase().getLocationTable().getPallets((String) objects[0], (String) objects[1]));
             }
         }
     }
 
-    @Command(command = "pallet", aliases = "getbylocation", type = CommandType.CLIENT, description = "/pallet getbylocation %location%", min = 1, max = 1)
-    public static void onGetByLocation(CommandSender sender, String[] args, Object[] objects) {
-        if (sender instanceof Client) {
+    @Command(command = "pallet", aliases = "create", type = CommandType.CLIENT, description = "", usage = "/pallet create %pallet%", min = 1, max = 1)
+    public static void create(CommandSender sender, String[] args, Object[] objects) {
+        if (sender instanceof Client) {//todo:
             Client client = (Client) sender;
 
-            if (objects[0] instanceof Location) {
-                client.send(DatabaseManager.getInstance().getDatabase().getPalletTable().getPalletsByLocation(((Location) objects[0]).getName()));
+            if (objects[0] instanceof Pallet) {
+                Pallet pallet = (Pallet) objects[0];
+
+                client.send(DatabaseManager.getInstance().getDatabase().getPalletTable().insertPallet(pallet));
             }
         }
     }

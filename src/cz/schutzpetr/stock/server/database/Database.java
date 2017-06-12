@@ -64,18 +64,18 @@ public class Database {
 
         List<Location> locations = new ArrayList<>();
 
-        /*for (int i = 5; i < 10; i++) {
-            for (int j = 0; j < 100; j++) {
+        /*for (int i = 1; i < 3; i++) {
+            for (int j = 0; j < 20; j++) {
                 for (int k = 0; k < 30; k++) {
-                    locations.add(new Rack(((i*100)+j) + "-" + k + "-1",  "101"));
-                    locations.add(new Rack(((i*100)+j) + "-" + k + "-2",  "101"));
-                    locations.add(new Rack(((i*100)+j) + "-" + k + "-3",  "101"));
-                    locations.add(new Rack(((i*100)+j) + "-" + k + "-4",  "101"));
+                    locations.add(new Rack(((i*100)+j) + "-" + k + "-1",  "101", null));
+                    locations.add(new Rack(((i*100)+j) + "-" + k + "-2",  "101", null));
+                    locations.add(new Rack(((i*100)+j) + "-" + k + "-3",  "101",null));
+                    locations.add(new Rack(((i*100)+j) + "-" + k + "-4",  "101",null));
                 }
             }
-        }*/
+        }
 
-        //locationTable.insertLocations(locations);
+        locationTable.insertLocations(locations);*/
     }
 
     /**
@@ -116,5 +116,9 @@ public class Database {
 
     public ItemTable getItemTable() {
         return itemTable;
+    }
+
+    public void disconnect() throws SQLException {
+        this.dataSource.getConnection().close();
     }
 }

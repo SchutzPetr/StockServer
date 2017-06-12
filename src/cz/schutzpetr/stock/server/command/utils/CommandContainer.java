@@ -23,7 +23,7 @@ public class CommandContainer {
     private final Method method;
 
     /**
-     * Create a new instance of container that contains Command and his method.
+     * Create a news instance of container that contains Command and his method.
      *
      * @param command base commands
      * @param method  commands method

@@ -99,7 +99,7 @@ public class ServerGUIController implements ControllerImpl {
         Logger.getLogger().addHandler(console);
 
 
-        /*PrintStream ps = new PrintStream(console, true);
+        /*PrintStream ps = news PrintStream(console, true);
         System.setOut(ps);
         System.setErr(ps);*/
         serverStartButton.setOnAction(event -> Server.getInstance().start());

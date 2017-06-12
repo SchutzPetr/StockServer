@@ -18,16 +18,16 @@ public class LoggerFormatter extends Formatter {
     private final boolean newLine;
 
     /**
-     * Creates new instance of LoggerFormatter and insert a new line at the end of the record.
+     * Creates news instance of LoggerFormatter and insert a news line at the end of the record.
      */
     public LoggerFormatter() {
         this(true);
     }
 
     /**
-     * Creates new instance of LoggerFormatter
+     * Creates news instance of LoggerFormatter
      *
-     * @param newLine Insert a new line at the end of the record?
+     * @param newLine Insert a news line at the end of the record?
      */
     public LoggerFormatter(boolean newLine) {
         this.newLine = newLine;

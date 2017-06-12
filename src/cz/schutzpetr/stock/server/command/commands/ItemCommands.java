@@ -1,18 +1,7 @@
 package cz.schutzpetr.stock.server.command.commands;
 
-import cz.schutzpetr.stock.core.connection.RequestResult;
-import cz.schutzpetr.stock.core.items.Item;
-import cz.schutzpetr.stock.core.location.BaseLocation;
-import cz.schutzpetr.stock.core.storagecard.SimpleStorageCard;
-import cz.schutzpetr.stock.server.client.Client;
 import cz.schutzpetr.stock.server.command.annotation.BaseCommand;
-import cz.schutzpetr.stock.server.command.annotation.Command;
 import cz.schutzpetr.stock.server.command.interfaces.CommandClass;
-import cz.schutzpetr.stock.server.command.interfaces.CommandSender;
-import cz.schutzpetr.stock.server.command.utils.CommandType;
-import cz.schutzpetr.stock.server.database.DatabaseManager;
-
-import java.util.ArrayList;
 
 /**
  * Created by Petr Schutz on 28.03.2017
@@ -22,13 +11,13 @@ import java.util.ArrayList;
  */
 @BaseCommand(command = "item")
 public class ItemCommands implements CommandClass {
-
+/*
     @Command(command = "item", aliases = "getall", type = CommandType.CLIENT, description = "", min = 1, max = 1)
     public static void getAll(CommandSender sender, String[] args, Object[] objects) {
         if (sender instanceof Client) {
             Client client = (Client) sender;
 
-            client.send(DatabaseManager.getInstance().getDatabase().getItemTable().getItems());
+            //client.send(DatabaseManager.getInstance().getDatabase().getItemTable().getItems());
         }
     }
 
@@ -38,7 +27,7 @@ public class ItemCommands implements CommandClass {
             Client client = (Client) sender;
 
             RequestResult<ArrayList<Item>> itemDatabaseResult;
-
+/*
             if (objects.length == 2) {
                 if (objects[0] instanceof SimpleStorageCard && objects[1] instanceof BaseLocation) {
                     ArrayList<Item> list = new ArrayList<>(1);
@@ -53,8 +42,8 @@ public class ItemCommands implements CommandClass {
                 } else if (objects[0] instanceof Integer) {
                     client.send(DatabaseManager.getInstance().getDatabase().getItemTable().getItems((Integer) objects[0]));
                 }
-            }
-        }
+            }*/
+     /*   }
     }
 
     @Command(command = "item", aliases = "getbysql", type = CommandType.CLIENT, description = "/item getbysql %sql%", min = 1, max = 1)
@@ -76,8 +65,10 @@ public class ItemCommands implements CommandClass {
             if (objects[0] instanceof Item) {
                 Item item = (Item) objects[0];
 
-                client.send(DatabaseManager.getInstance().getDatabase().getItemTable().insertItem(item));
+
+
+               // client.send(DatabaseManager.getInstance().getDatabase().getItemTable().insertItem(item));
             }
         }
-    }
+    }*/
 }

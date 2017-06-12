@@ -1,16 +1,6 @@
 package cz.schutzpetr.stock.server.database.table;
 
-import cz.schutzpetr.stock.core.connection.RequestResult;
-import cz.schutzpetr.stock.core.items.Item;
-import cz.schutzpetr.stock.core.location.BaseLocation;
-import cz.schutzpetr.stock.server.database.extractor.ItemExtractor;
-import cz.schutzpetr.stock.server.database.mapper.ItemMapper;
-import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
-import org.springframework.jdbc.core.PreparedStatementCreator;
-
-import java.sql.PreparedStatement;
-import java.util.ArrayList;
 
 /**
  * Created by Petr Schutz on 19.05.2017
@@ -25,6 +15,18 @@ public class ItemTable extends DBTable {
      */
     public ItemTable(JdbcTemplate jdbcTemplate) {
         super(jdbcTemplate);
+    }
+
+    /*private RequestResult<ArrayList<Item>> get(String sql) {
+        return get(connection -> connection.prepareStatement(sql));
+    }
+    private RequestResult<ArrayList<Item>> get(PreparedStatementCreator psc) {
+        try {
+            return new RequestResult<>(jdbcTemplate.query(psc, new PalletsExtractor()));
+        } catch (DataAccessException e) {
+            e.printStackTrace();
+            return new RequestResult<>(e);
+        }
     }
 
     public RequestResult<ArrayList<Item>> getItems() {
@@ -99,5 +101,5 @@ public class ItemTable extends DBTable {
             e.printStackTrace();
             return new RequestResult<>(e);
         }
-    }
+    }*/
 }

@@ -1,12 +1,15 @@
 package cz.schutzpetr.stock.server.database.extractor;
 
-import cz.schutzpetr.stock.core.storagecard.SimpleStorageCard;
-import cz.schutzpetr.stock.core.utils.EuropeanArticleNumber;
+import cz.schutzpetr.stock.core.location.Location;
+import cz.schutzpetr.stock.core.stockcard.SimpleStockCard;
 import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.ResultSetExtractor;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * Created by Petr Schutz on 19.05.2017
@@ -14,7 +17,7 @@ import java.sql.SQLException;
  * @author Petr Schutz
  * @version 1.0
  */
-public class SimpleStorageCardExtractor implements ResultSetExtractor<SimpleStorageCard> {
+public class LocationsExtractor implements ResultSetExtractor<ArrayList<Location>> {
 
     /**
      * Implementations must implement this method to process the entire ResultSet.
@@ -25,15 +28,10 @@ public class SimpleStorageCardExtractor implements ResultSetExtractor<SimpleStor
      * @throws DataAccessException in case of custom exceptions
      */
     @Override
-    public SimpleStorageCard extractData(ResultSet resultSet) throws SQLException, DataAccessException {
-        return new SimpleStorageCard(
-                resultSet.getInt("card_number"),
-                resultSet.getString("item_name"),
-                new EuropeanArticleNumber(resultSet.getString("ean")),
-                resultSet.getString("item_number"),
-                resultSet.getDouble("price_per_unit"),
-                resultSet.getString("item_producer"),
-                resultSet.getDouble("item_weight"),
-                resultSet.getInt("number_of_unit_in_package"));
+    public ArrayList<Location> extractData(ResultSet resultSet) throws SQLException, DataAccessException {
+        final ArrayList<Location> locations = new ArrayList<>();
+        final Map<String, SimpleStockCard> simpleStorageCardMap = new HashMap<>();
+        while (resultSet.next()) locations.add(Location.getLocation(resultSet, simpleStorageCardMap));
+        return locations;
     }
 }

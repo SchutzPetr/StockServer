@@ -1,15 +1,7 @@
 package cz.schutzpetr.stock.server.command.commands;
 
-import cz.schutzpetr.stock.core.storagecard.ConnectionStorageCard;
-import cz.schutzpetr.stock.core.storagecard.SimpleStorageCard;
-import cz.schutzpetr.stock.server.client.Client;
 import cz.schutzpetr.stock.server.command.annotation.BaseCommand;
-import cz.schutzpetr.stock.server.command.annotation.Command;
 import cz.schutzpetr.stock.server.command.interfaces.CommandClass;
-import cz.schutzpetr.stock.server.command.interfaces.CommandSender;
-import cz.schutzpetr.stock.server.command.utils.CommandType;
-import cz.schutzpetr.stock.server.database.DatabaseManager;
-import cz.schutzpetr.stock.server.utils.items.StorageCard;
 
 /**
  * Created by Petr Schutz on 03.04.2017
@@ -19,7 +11,7 @@ import cz.schutzpetr.stock.server.utils.items.StorageCard;
  */
 @BaseCommand(command = "storagecard")
 public class StorageCardCommand implements CommandClass {
-
+/*
     @Command(command = "storagecard", aliases = "create", type = CommandType.CLIENT, description = "", usage = "/storagecard create %card%", min = 1, max = 1)
     public static void create(CommandSender sender, String[] args, Object[] objects) {
         if (sender instanceof Client) {//todo:
@@ -64,5 +56,5 @@ public class StorageCardCommand implements CommandClass {
                 client.send(DatabaseManager.getInstance().getDatabase().getStorageCardTable().getStorageCard((Integer) objects[0]));
             }
         }
-    }
+    }*/
 }

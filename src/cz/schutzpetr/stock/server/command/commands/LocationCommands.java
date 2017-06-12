@@ -20,21 +20,14 @@ public class LocationCommands implements CommandClass {
 
     //private LocationCommands(){}
 
-    @Command(command = "location", aliases = "getall", type = CommandType.CLIENT, description = "", min = 1, max = 1)
+    @Command(command = "location", aliases = "get", type = CommandType.CLIENT, description = "/location get {whereClause}", min = 1, max = 1)
     public static void onGetAll(CommandSender sender, String[] args, Object[] objects) {
         if (sender instanceof Client) {
             Client client = (Client) sender;
 
-            client.send(DatabaseManager.getInstance().getDatabase().getLocationTable().getLocations());
-        }
-    }
-
-    @Command(command = "location", aliases = "getbysql", type = CommandType.CLIENT, description = "/location getbysql %sql%", min = 1, max = 1)
-    public static void onGetBySQL(CommandSender sender, String[] args, Object[] objects) {
-        if (sender instanceof Client) {
-            Client client = (Client) sender;
-
-            if (objects[0] instanceof String) {
+            if (objects == null || objects.length == 0) {
+                client.send(DatabaseManager.getInstance().getDatabase().getLocationTable().getLocations());
+            } else if (objects[0] instanceof String) {
                 client.send(DatabaseManager.getInstance().getDatabase().getLocationTable().getLocations((String) objects[0]));
             }
         }

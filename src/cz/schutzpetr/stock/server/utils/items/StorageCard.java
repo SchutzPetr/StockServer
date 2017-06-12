@@ -1,7 +1,7 @@
 package cz.schutzpetr.stock.server.utils.items;
 
-import cz.schutzpetr.stock.core.storagecard.ConnectionStorageCard;
-import cz.schutzpetr.stock.core.storagecard.SimpleStorageCard;
+import cz.schutzpetr.stock.core.stockcard.ConnectionStockCard;
+import cz.schutzpetr.stock.core.stockcard.SimpleStockCard;
 import cz.schutzpetr.stock.core.utils.EuropeanArticleNumber;
 import javafx.embed.swing.SwingFXUtils;
 import javafx.scene.image.Image;
@@ -19,7 +19,7 @@ import java.io.InputStream;
  * @author Petr Schutz
  * @version 1.0
  */
-public class StorageCard extends SimpleStorageCard {
+public class StorageCard extends SimpleStockCard {
     private final InputStream imgInputStream;
 
     public StorageCard(int cardNumber, String itemName, EuropeanArticleNumber ean, String itemNumber, double pricePerUnit, String producer,
@@ -29,16 +29,16 @@ public class StorageCard extends SimpleStorageCard {
     }
 
 
-    public StorageCard(ConnectionStorageCard connectionStorageCard) {
-        this(connectionStorageCard.getCardNumber(), connectionStorageCard.getItemName(), connectionStorageCard.getEuropeanArticleNumber(),
-                connectionStorageCard.getItemNumber(), connectionStorageCard.getPricePerUnit(), connectionStorageCard.getProducer(), connectionStorageCard.getWeight(),
-                connectionStorageCard.getNumberOfUnitInPackage(), new ByteArrayInputStream(connectionStorageCard.getImgByteArray()));
+    public StorageCard(ConnectionStockCard connectionStockCard) {
+        this(connectionStockCard.getCardNumber(), connectionStockCard.getItemName(), connectionStockCard.getEuropeanArticleNumber(),
+                connectionStockCard.getItemNumber(), connectionStockCard.getPricePerUnit(), connectionStockCard.getProducer(), connectionStockCard.getWeight(),
+                connectionStockCard.getNumberOfUnitInPackage(), new ByteArrayInputStream(connectionStockCard.getImgByteArray()));
     }
 
-    public StorageCard(SimpleStorageCard simpleStorageCard, InputStream imgInputStream) {
-        this(simpleStorageCard.getCardNumber(), simpleStorageCard.getItemName(), simpleStorageCard.getEuropeanArticleNumber(),
-                simpleStorageCard.getItemNumber(), simpleStorageCard.getPricePerUnit(), simpleStorageCard.getProducer(), simpleStorageCard.getWeight(),
-                simpleStorageCard.getNumberOfUnitInPackage(), imgInputStream);
+    public StorageCard(SimpleStockCard simpleStockCard, InputStream imgInputStream) {
+        this(simpleStockCard.getCardNumber(), simpleStockCard.getItemName(), simpleStockCard.getEuropeanArticleNumber(),
+                simpleStockCard.getItemNumber(), simpleStockCard.getPricePerUnit(), simpleStockCard.getProducer(), simpleStockCard.getWeight(),
+                simpleStockCard.getNumberOfUnitInPackage(), imgInputStream);
     }
 
     private static ByteArrayOutputStream getByteArrayOutputStream(InputStream imgInputStream) {
@@ -52,8 +52,8 @@ public class StorageCard extends SimpleStorageCard {
         return os;
     }
 
-    public ConnectionStorageCard getConnectionStorageCard() {
-        return new ConnectionStorageCard(this, getByteArrayOutputStream(imgInputStream).toByteArray());
+    public ConnectionStockCard getConnectionStockCard() {
+        return new ConnectionStockCard(this, getByteArrayOutputStream(imgInputStream).toByteArray());
     }
 
 
