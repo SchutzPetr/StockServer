@@ -5,7 +5,7 @@ import cz.schutzpetr.stock.server.command.annotation.Command;
 import cz.schutzpetr.stock.server.command.commands.ItemCommands;
 import cz.schutzpetr.stock.server.command.commands.LocationCommands;
 import cz.schutzpetr.stock.server.command.commands.PalletCommands;
-import cz.schutzpetr.stock.server.command.commands.StorageCardCommand;
+import cz.schutzpetr.stock.server.command.commands.StockCardCommand;
 import cz.schutzpetr.stock.server.command.interfaces.CommandClass;
 import cz.schutzpetr.stock.server.command.utils.CommandContainer;
 
@@ -38,7 +38,7 @@ public class CommandManager {
     public static void registerCommands() {
         registerCommands(LocationCommands.class);
         registerCommands(PalletCommands.class);
-        registerCommands(StorageCardCommand.class);
+        registerCommands(StockCardCommand.class);
         registerCommands(ItemCommands.class);
     }
 

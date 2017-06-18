@@ -16,7 +16,7 @@ import java.sql.SQLException;
 public class SimpleStockCardMapper implements RowMapper<SimpleStockCard> {
 
     public static SimpleStockCard getSimpleStorageCard(ResultSet resultSet) throws SQLException {
-        return new SimpleStockCard(resultSet.getInt("card_number"),
+        return new SimpleStockCard(resultSet.getInt("card_id"),
                 resultSet.getString("item_name"),
                 new EuropeanArticleNumber(resultSet.getString("ean")),
                 resultSet.getString("item_number"),

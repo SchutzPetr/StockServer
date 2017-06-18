@@ -1,5 +1,6 @@
 package cz.schutzpetr.stock.server.command.commands;
 
+import cz.schutzpetr.stock.core.expressions.WhereClause;
 import cz.schutzpetr.stock.core.location.Location;
 import cz.schutzpetr.stock.server.client.Client;
 import cz.schutzpetr.stock.server.command.annotation.BaseCommand;
@@ -27,8 +28,8 @@ public class LocationCommands implements CommandClass {
 
             if (objects == null || objects.length == 0) {
                 client.send(DatabaseManager.getInstance().getDatabase().getLocationTable().getLocations());
-            } else if (objects[0] instanceof String) {
-                client.send(DatabaseManager.getInstance().getDatabase().getLocationTable().getLocations((String) objects[0]));
+            } else if (objects[0] instanceof WhereClause) {
+                client.send(DatabaseManager.getInstance().getDatabase().getLocationTable().getLocations((WhereClause) objects[0]));
             }
         }
     }

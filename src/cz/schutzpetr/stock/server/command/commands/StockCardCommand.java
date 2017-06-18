@@ -1,7 +1,12 @@
 package cz.schutzpetr.stock.server.command.commands;
 
+import cz.schutzpetr.stock.server.client.Client;
 import cz.schutzpetr.stock.server.command.annotation.BaseCommand;
+import cz.schutzpetr.stock.server.command.annotation.Command;
 import cz.schutzpetr.stock.server.command.interfaces.CommandClass;
+import cz.schutzpetr.stock.server.command.interfaces.CommandSender;
+import cz.schutzpetr.stock.server.command.utils.CommandType;
+import cz.schutzpetr.stock.server.database.DatabaseManager;
 
 /**
  * Created by Petr Schutz on 03.04.2017
@@ -10,7 +15,21 @@ import cz.schutzpetr.stock.server.command.interfaces.CommandClass;
  * @version 1.0
  */
 @BaseCommand(command = "storagecard")
-public class StorageCardCommand implements CommandClass {
+public class StockCardCommand implements CommandClass {
+
+    @Command(command = "storagecard", aliases = "get", type = CommandType.CLIENT, min = 1, max = 1)
+    public static void onGetAll(CommandSender sender, String[] args, Object[] objects) {
+        if (sender instanceof Client) {
+            Client client = (Client) sender;
+
+            if (objects == null || objects.length == 0) {
+                client.send(DatabaseManager.getInstance().getDatabase().getLocationTable().getSimpleStockCards());
+            } else if (objects[0] instanceof String) {
+                //client.send(DatabaseManager.getInstance().getDatabase().getLocationTable().getLocations((String) objects[0]));
+            }
+        }
+    }
+
 /*
     @Command(command = "storagecard", aliases = "create", type = CommandType.CLIENT, description = "", usage = "/storagecard create %card%", min = 1, max = 1)
     public static void create(CommandSender sender, String[] args, Object[] objects) {

@@ -1,7 +1,13 @@
 package cz.schutzpetr.stock.server.command.commands;
 
+import cz.schutzpetr.stock.core.expressions.WhereClause;
+import cz.schutzpetr.stock.server.client.Client;
 import cz.schutzpetr.stock.server.command.annotation.BaseCommand;
+import cz.schutzpetr.stock.server.command.annotation.Command;
 import cz.schutzpetr.stock.server.command.interfaces.CommandClass;
+import cz.schutzpetr.stock.server.command.interfaces.CommandSender;
+import cz.schutzpetr.stock.server.command.utils.CommandType;
+import cz.schutzpetr.stock.server.database.DatabaseManager;
 
 /**
  * Created by Petr Schutz on 28.03.2017
@@ -11,6 +17,20 @@ import cz.schutzpetr.stock.server.command.interfaces.CommandClass;
  */
 @BaseCommand(command = "item")
 public class ItemCommands implements CommandClass {
+
+    @Command(command = "item", aliases = "get", type = CommandType.CLIENT, min = 1, max = 1)
+    public static void onGetAll(CommandSender sender, String[] args, Object[] objects) {
+        if (sender instanceof Client) {
+            Client client = (Client) sender;
+
+            if (objects == null || objects.length == 0) {
+                client.send(DatabaseManager.getInstance().getDatabase().getLocationTable().getItems());
+            } else if (objects[0] instanceof WhereClause) {
+                client.send(DatabaseManager.getInstance().getDatabase().getLocationTable().getItems((WhereClause) objects[0]));
+            }
+        }
+    }
+
 /*
     @Command(command = "item", aliases = "getall", type = CommandType.CLIENT, description = "", min = 1, max = 1)
     public static void getAll(CommandSender sender, String[] args, Object[] objects) {

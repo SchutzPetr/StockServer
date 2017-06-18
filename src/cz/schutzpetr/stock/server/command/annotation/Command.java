@@ -27,7 +27,7 @@ public @interface Command {
 
     int max() default -1;
 
-    String description();
+    String description() default "";
 
     String usage() default "";
 

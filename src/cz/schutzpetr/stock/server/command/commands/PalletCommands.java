@@ -1,5 +1,6 @@
 package cz.schutzpetr.stock.server.command.commands;
 
+import cz.schutzpetr.stock.core.expressions.WhereClause;
 import cz.schutzpetr.stock.core.location.Pallet;
 import cz.schutzpetr.stock.server.client.Client;
 import cz.schutzpetr.stock.server.command.annotation.BaseCommand;
@@ -25,8 +26,8 @@ public class PalletCommands implements CommandClass {
 
             if (objects == null || objects.length == 0) {
                 client.send(DatabaseManager.getInstance().getDatabase().getLocationTable().getPallets());
-            } else if (objects[0] instanceof String && objects[1] instanceof String) {
-                client.send(DatabaseManager.getInstance().getDatabase().getLocationTable().getPallets((String) objects[0], (String) objects[1]));
+            } else if (objects[0] instanceof WhereClause) {
+                client.send(DatabaseManager.getInstance().getDatabase().getLocationTable().getPallets((WhereClause) objects[0]));
             }
         }
     }
