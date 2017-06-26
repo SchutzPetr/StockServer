@@ -1,5 +1,6 @@
 package cz.schutzpetr.stock.server;
 
+import cz.schutzpetr.stock.server.data.DataManager;
 import cz.schutzpetr.stock.server.database.DatabaseManager;
 import cz.schutzpetr.stock.server.events.EventManager;
 import cz.schutzpetr.stock.server.events.events.server.ServerStartedEvent;
@@ -38,6 +39,7 @@ public class Server {
         EventManager.callEvent(new ServerStartingEvent());
         if (isRunning) return;
         Logger.log("Starting server on port: " + this.port);
+
         ServerSocket serverSocket = createServerSocket(this.port);
 
         if (serverSocket == null) {
@@ -45,13 +47,23 @@ public class Server {
             return;
         }
 
-        serverThread = new ServerThread(serverSocket);
-        serverThread.start();
+        Thread thread = new Thread(() -> {
+            Logger.log("Loading data...");
+            DataManager.loadData();
+            Logger.log("Data loaded!");
+        });
 
-        isRunning = true;
-        EventManager.callEvent(new ServerStartedEvent());
-        DatabaseManager.getInstance().getDatabase();
-        Logger.log("Server up & ready for connections......");
+        thread.start();
+
+        new Thread(() -> {
+            isRunning = true;
+            while (thread.isAlive()) ;
+            EventManager.callEvent(new ServerStartedEvent());
+            DatabaseManager.getInstance().getDatabase();
+            serverThread = new ServerThread(serverSocket);
+            serverThread.start();
+            Logger.log("Server up & ready for connections......");
+        }).start();
     }
 
     public void restart() {

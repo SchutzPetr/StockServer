@@ -19,23 +19,23 @@ import java.io.InputStream;
  * @author Petr Schutz
  * @version 1.0
  */
-public class StorageCard extends SimpleStockCard {
+public class StockCard extends SimpleStockCard {
     private final InputStream imgInputStream;
 
-    public StorageCard(int cardNumber, String itemName, EuropeanArticleNumber ean, String itemNumber, double pricePerUnit, String producer,
-                       double weight, int numberOfUnitInPackage, InputStream imgInputStream) {
+    public StockCard(int cardNumber, String itemName, EuropeanArticleNumber ean, String itemNumber, double pricePerUnit, String producer,
+                     double weight, int numberOfUnitInPackage, InputStream imgInputStream) {
         super(cardNumber, itemName, ean, itemNumber, pricePerUnit, producer, weight, numberOfUnitInPackage);
         this.imgInputStream = imgInputStream;
     }
 
 
-    public StorageCard(ConnectionStockCard connectionStockCard) {
+    public StockCard(ConnectionStockCard connectionStockCard) {
         this(connectionStockCard.getCardNumber(), connectionStockCard.getItemName(), connectionStockCard.getEuropeanArticleNumber(),
                 connectionStockCard.getItemNumber(), connectionStockCard.getPricePerUnit(), connectionStockCard.getProducer(), connectionStockCard.getWeight(),
                 connectionStockCard.getNumberOfUnitInPackage(), new ByteArrayInputStream(connectionStockCard.getImgByteArray()));
     }
 
-    public StorageCard(SimpleStockCard simpleStockCard, InputStream imgInputStream) {
+    public StockCard(SimpleStockCard simpleStockCard, InputStream imgInputStream) {
         this(simpleStockCard.getCardNumber(), simpleStockCard.getItemName(), simpleStockCard.getEuropeanArticleNumber(),
                 simpleStockCard.getItemNumber(), simpleStockCard.getPricePerUnit(), simpleStockCard.getProducer(), simpleStockCard.getWeight(),
                 simpleStockCard.getNumberOfUnitInPackage(), imgInputStream);
@@ -50,6 +50,12 @@ public class StorageCard extends SimpleStockCard {
             e.printStackTrace();
         }
         return os;
+    }
+
+    public static SimpleStockCard getSimple(StockCard card) {
+        return new SimpleStockCard(card.getCardNumber(), card.getItemName(), card.getEuropeanArticleNumber(),
+                card.getItemNumber(), card.getPricePerUnit(), card.getProducer(), card.getWeight(),
+                card.getNumberOfUnitInPackage());
     }
 
     public ConnectionStockCard getConnectionStockCard() {

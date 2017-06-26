@@ -35,6 +35,7 @@ public class ApplicationManager {
         instance = this;
         this.loginGUI = new BasicGUI<>("Stock-Login", 800, 450, true, "/cz/schutzpetr/stock/server/gui/fxml/LoginGUI.fxml",
                 "/res/img/Deployment-50.png", Modality.APPLICATION_MODAL);
+
     }
 
     /**

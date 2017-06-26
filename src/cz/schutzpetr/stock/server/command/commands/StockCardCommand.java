@@ -1,11 +1,16 @@
 package cz.schutzpetr.stock.server.command.commands;
 
+import cz.schutzpetr.stock.core.connection.RequestResult;
+import cz.schutzpetr.stock.core.expressions.WhereClause;
+import cz.schutzpetr.stock.core.stockcard.ConnectionStockCard;
+import cz.schutzpetr.stock.core.stockcard.SimpleStockCard;
 import cz.schutzpetr.stock.server.client.Client;
 import cz.schutzpetr.stock.server.command.annotation.BaseCommand;
 import cz.schutzpetr.stock.server.command.annotation.Command;
 import cz.schutzpetr.stock.server.command.interfaces.CommandClass;
 import cz.schutzpetr.stock.server.command.interfaces.CommandSender;
 import cz.schutzpetr.stock.server.command.utils.CommandType;
+import cz.schutzpetr.stock.server.data.DataManager;
 import cz.schutzpetr.stock.server.database.DatabaseManager;
 
 /**
@@ -22,13 +27,52 @@ public class StockCardCommand implements CommandClass {
         if (sender instanceof Client) {
             Client client = (Client) sender;
 
-            if (objects == null || objects.length == 0) {
-                client.send(DatabaseManager.getInstance().getDatabase().getLocationTable().getSimpleStockCards());
-            } else if (objects[0] instanceof String) {
-                //client.send(DatabaseManager.getInstance().getDatabase().getLocationTable().getLocations((String) objects[0]));
+            if (objects == null || objects.length == 0)
+                client.send(new RequestResult<>(DataManager.getStockCardData().getData()));
+            else if (objects[0] instanceof WhereClause)
+                client.send(new RequestResult<>(DataManager.getStockCardData().getFilteredData((WhereClause) objects[0])));
+            else if (objects[0] instanceof SimpleStockCard) client.send(new RequestResult<>(
+                    DatabaseManager.getInstance().
+                            getDatabase().getData().getStockCard(((SimpleStockCard) objects[0]).getEuropeanArticleNumber()).getResult().getConnectionStockCard()));
+        }
+    }
+
+    @Command(command = "storagecard", aliases = "create", type = CommandType.CLIENT, usage = "/storagecard create %storagecard%", min = 1, max = 1)
+    public static void onCreateCommand(CommandSender sender, String[] args, Object[] objects) {
+        if (sender instanceof Client) {
+            Client client = (Client) sender;
+
+            if (objects != null && objects[0] instanceof ConnectionStockCard) {
+                //noinspection unchecked
+                client.send(new RequestResult<>(DataManager.getStockCardData().insertData(((ConnectionStockCard) objects[0]))));
             }
         }
     }
+
+    @Command(command = "storagecard", aliases = "edit", type = CommandType.CLIENT, usage = "/storagecard edit %storagecard%", min = 1, max = 1)
+    public static void oEditCommand(CommandSender sender, String[] args, Object[] objects) {
+        if (sender instanceof Client) {
+            Client client = (Client) sender;
+
+            if (objects != null && objects[0] instanceof ConnectionStockCard) {
+                //noinspection unchecked
+                client.send(new RequestResult<>(DataManager.getStockCardData().edit(((ConnectionStockCard) objects[0]))));
+            }
+        }
+    }
+
+    @Command(command = "storagecard", aliases = "remove", type = CommandType.CLIENT, usage = "/storagecard remove %location%", min = 1, max = 1)
+    public static void onRemoveCommand(CommandSender sender, String[] args, Object[] objects) {
+        if (sender instanceof Client) {
+            Client client = (Client) sender;
+
+            if (objects != null && objects[0] instanceof SimpleStockCard) {
+                //noinspection unchecked
+                client.send(DataManager.getStockCardData().remove(((SimpleStockCard) objects[0])));
+            }
+        }
+    }
+
 
 /*
     @Command(command = "storagecard", aliases = "create", type = CommandType.CLIENT, description = "", usage = "/storagecard create %card%", min = 1, max = 1)
@@ -37,7 +81,7 @@ public class StockCardCommand implements CommandClass {
             Client client = (Client) sender;
 
             if (objects[0] instanceof ConnectionStorageCard) {
-                StorageCard storageCard = new StorageCard((ConnectionStorageCard) objects[0]);
+                StockCard storageCard = new StockCard((ConnectionStorageCard) objects[0]);
 
                 client.send(DatabaseManager.getInstance().getDatabase().getStorageCardTable().insertStorageCard(storageCard));
             }

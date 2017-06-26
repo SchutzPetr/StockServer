@@ -53,4 +53,18 @@ public class Logger {
     public static void log(String msg) {
         getLogger().info(msg);
     }
+
+    /**
+     * Log a message, with no arguments and Info level
+     * <p>
+     * If the logger is currently enabled for the given message
+     * level then the given message is forwarded to all the
+     * registered output Handler objects.
+     * <p>
+     *
+     * @param msg The string message (or a key in the message catalog)
+     */
+    public static void severe(String msg) {
+        getLogger().log(Level.SEVERE, msg);
+    }
 }

@@ -1,7 +1,12 @@
 package cz.schutzpetr.stock.server.database;
 
+import cz.schutzpetr.stock.core.items.Item;
 import cz.schutzpetr.stock.core.location.Location;
-import cz.schutzpetr.stock.server.database.table.*;
+import cz.schutzpetr.stock.core.location.Pallet;
+import cz.schutzpetr.stock.core.location.Rack;
+import cz.schutzpetr.stock.core.stockcard.SimpleStockCard;
+import cz.schutzpetr.stock.server.database.table.Data;
+import cz.schutzpetr.stock.server.database.table.UserTable;
 import org.springframework.jdbc.core.JdbcTemplate;
 
 import javax.sql.DataSource;
@@ -9,6 +14,7 @@ import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 /**
  * Created by Petr Schutz on 06.03.2017
@@ -29,24 +35,10 @@ public class Database {
     private UserTable userTable;
 
     /**
-     * Instance of {@code LocationTable}
+     * Instance of {@code Data}
      */
-    private LocationTable locationTable;
+    private Data data;
 
-    /**
-     * Instance of {@code PalletTable}
-     */
-    private PalletTable palletTable;
-
-    /**
-     * Instance of {@code StorageCardTable}
-     */
-    private StorageCardTable storageCardTable;
-
-    /**
-     * Instance of {@code ItemTable}
-     */
-    private ItemTable itemTable;
 
     /**
      * @param dataSource instance of {@code DataSource}
@@ -57,25 +49,52 @@ public class Database {
         JdbcTemplate jdbcTemplateObject = new JdbcTemplate(dataSource);
 
         this.userTable = new UserTable(jdbcTemplateObject);
-        this.locationTable = new LocationTable(jdbcTemplateObject);
-        this.palletTable = new PalletTable(jdbcTemplateObject);
-        this.storageCardTable = new StorageCardTable(jdbcTemplateObject);
-        this.itemTable = new ItemTable(jdbcTemplateObject);
+        this.data = new Data(jdbcTemplateObject);
 
         List<Location> locations = new ArrayList<>();
+        List<Pallet> pallets = new ArrayList<>();
 
-        /*for (int i = 1; i < 3; i++) {
+        for (int i = 1; i < 3; i++) {
             for (int j = 0; j < 20; j++) {
-                for (int k = 0; k < 30; k++) {
+                for (int k = 0; k < 20; k++) {
                     locations.add(new Rack(((i*100)+j) + "-" + k + "-1",  "101", null));
                     locations.add(new Rack(((i*100)+j) + "-" + k + "-2",  "101", null));
                     locations.add(new Rack(((i*100)+j) + "-" + k + "-3",  "101",null));
-                    locations.add(new Rack(((i*100)+j) + "-" + k + "-4",  "101",null));
                 }
             }
         }
 
-        locationTable.insertLocations(locations);*/
+        Random random = new Random();
+
+        List<Item> items = new ArrayList<>();
+
+        for (int i = 0; i < 9999; i++) {
+            pallets.add(new Pallet("003859081100" + i, locations.get(random.nextInt(locations.size()))));
+        }
+
+        List<SimpleStockCard> sc = data.getSimpleStockCards().getResult();
+
+        locations.forEach(location -> {
+            for (int i = 0; i < random.nextInt(); i++) {
+                SimpleStockCard s = sc.get(random.nextInt(sc.size()));
+
+                items.add(new Item(s, location, null, random.nextInt(500), 0));
+
+            }
+        });
+
+        pallets.forEach(pallet -> {
+            for (int i = 0; i < random.nextInt(); i++) {
+                SimpleStockCard s = sc.get(random.nextInt(sc.size()));
+
+                items.add(new Item(s, pallet.getLocation(), pallet, random.nextInt(500), 0));
+            }
+        });
+
+        //data.insertItems(items);
+
+        //data.insertLocations(locations);
+        // data.insertPallets(pallets);
     }
 
     /**
@@ -100,22 +119,10 @@ public class Database {
     }
 
     /**
-     * @return instance of {@code LocationTable}
+     * @return instance of {@code Data}
      */
-    public LocationTable getLocationTable() {
-        return locationTable;
-    }
-
-    public PalletTable getPalletTable() {
-        return palletTable;
-    }
-
-    public StorageCardTable getStorageCardTable() {
-        return storageCardTable;
-    }
-
-    public ItemTable getItemTable() {
-        return itemTable;
+    public Data getData() {
+        return data;
     }
 
     public void disconnect() throws SQLException {

@@ -1,13 +1,18 @@
 package cz.schutzpetr.stock.server.command.commands;
 
+import cz.schutzpetr.stock.core.connection.RequestResult;
 import cz.schutzpetr.stock.core.expressions.WhereClause;
+import cz.schutzpetr.stock.core.items.Item;
+import cz.schutzpetr.stock.core.location.BaseLocation;
 import cz.schutzpetr.stock.server.client.Client;
 import cz.schutzpetr.stock.server.command.annotation.BaseCommand;
 import cz.schutzpetr.stock.server.command.annotation.Command;
 import cz.schutzpetr.stock.server.command.interfaces.CommandClass;
 import cz.schutzpetr.stock.server.command.interfaces.CommandSender;
 import cz.schutzpetr.stock.server.command.utils.CommandType;
-import cz.schutzpetr.stock.server.database.DatabaseManager;
+import cz.schutzpetr.stock.server.data.DataManager;
+
+import java.util.ArrayList;
 
 /**
  * Created by Petr Schutz on 28.03.2017
@@ -19,14 +24,49 @@ import cz.schutzpetr.stock.server.database.DatabaseManager;
 public class ItemCommands implements CommandClass {
 
     @Command(command = "item", aliases = "get", type = CommandType.CLIENT, min = 1, max = 1)
-    public static void onGetAll(CommandSender sender, String[] args, Object[] objects) {
+    public static void onGetCommand(CommandSender sender, String[] args, Object[] objects) {
         if (sender instanceof Client) {
             Client client = (Client) sender;
 
-            if (objects == null || objects.length == 0) {
-                client.send(DatabaseManager.getInstance().getDatabase().getLocationTable().getItems());
-            } else if (objects[0] instanceof WhereClause) {
-                client.send(DatabaseManager.getInstance().getDatabase().getLocationTable().getItems((WhereClause) objects[0]));
+            if (objects == null || objects.length == 0)
+                client.send(new RequestResult<>(DataManager.getItemData().getData()));
+            else if (objects[0] instanceof WhereClause)
+                client.send(new RequestResult<>(DataManager.getItemData().getFilteredData((WhereClause) objects[0])));
+        }
+    }
+
+    @Command(command = "item", aliases = "create", type = CommandType.CLIENT, usage = "/item create %item%", min = 1, max = 1)
+    public static void onCreateCommand(CommandSender sender, String[] args, Object[] objects) {
+        if (sender instanceof Client) {
+            Client client = (Client) sender;
+
+            if (objects != null && objects[0] instanceof ArrayList) {
+                //noinspection unchecked
+                client.send(new RequestResult<>(DataManager.getItemData().insertData(((ArrayList<Item>) objects[0]))));
+            }
+        }
+    }
+
+    @Command(command = "item", aliases = "relocate", type = CommandType.CLIENT, usage = "/item relocate %item%", min = 1, max = 1)
+    public static void onRelocateCommand(CommandSender sender, String[] args, Object[] objects) {
+        if (sender instanceof Client) {
+            Client client = (Client) sender;
+
+            if (objects != null && objects[0] instanceof Item && objects[1] instanceof BaseLocation && objects[2] instanceof Integer) {
+                //noinspection unchecked
+                client.send(new RequestResult<>(DataManager.getItemData().relocate(((Item) objects[0]), ((BaseLocation) objects[1]), ((Integer) objects[2]))));
+            }
+        }
+    }
+
+    @Command(command = "item", aliases = "remove", type = CommandType.CLIENT, usage = "/location remove %location%", min = 1, max = 1)
+    public static void onRemoveCommand(CommandSender sender, String[] args, Object[] objects) {
+        if (sender instanceof Client) {
+            Client client = (Client) sender;
+
+            if (objects != null && objects[0] instanceof Item) {
+                //noinspection unchecked
+                client.send(new RequestResult<>(DataManager.getItemData().remove(((Item) objects[0]))));
             }
         }
     }
